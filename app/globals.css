@@ -1,0 +1,235 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+
+body { @apply bg-zinc-950 text-zinc-100 antialiased; }
+
+.container { @apply mx-auto max-w-6xl px-4; }
+
+.glow {
+  background:
+    radial-gradient(600px circle at 20% 10%, rgba(56, 189, 248, 0.18), transparent 40%),
+    radial-gradient(700px circle at 80% 30%, rgba(168, 85, 247, 0.14), transparent 45%);
+  background-size: 108% 108%;
+  animation: glow-drift 10s ease-in-out infinite alternate;
+}
+
+@keyframes glow-drift {
+  0% {
+    background-position: 0% 0%, 100% 0%;
+  }
+  50% {
+    background-position: 2% 2%, 98% 3%;
+  }
+  100% {
+    background-position: 4% 4%, 96% 6%;
+  }
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-transition-enter {
+  animation: page-enter 250ms ease-out both;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blur-in {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes accordion-open {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes accordion-close {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  filter: blur(6px);
+  transition:
+    opacity 360ms ease,
+    transform 360ms ease,
+    filter 420ms ease;
+  will-change: opacity, transform, filter;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  animation:
+    fade-up 360ms ease both,
+    blur-in 420ms ease both;
+}
+
+.hover-lift {
+  transition:
+    transform 240ms ease,
+    box-shadow 240ms ease,
+    border-color 240ms ease,
+    background-color 240ms ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.35);
+}
+
+.hover-lift:focus-visible {
+  transform: translateY(-2px);
+}
+
+.pressable {
+  transition: transform 180ms ease;
+}
+
+.pressable:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.focus-ring {
+  outline: none;
+  transition: box-shadow 180ms ease;
+}
+
+.focus-ring:focus-visible {
+  box-shadow:
+    0 0 0 1px rgba(9, 9, 11, 0.8),
+    0 0 0 3px rgba(148, 163, 184, 0.45);
+}
+
+.nav-link {
+  position: relative;
+  padding-bottom: 2px;
+  transition: color 180ms ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+  height: 2px;
+  width: 100%;
+  border-radius: 9999px;
+  background: rgba(244, 244, 245, 0.9);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 220ms ease, opacity 220ms ease;
+  opacity: 0.75;
+}
+
+.nav-link:hover::after,
+.nav-link-active::after {
+  transform: scaleX(1);
+}
+
+.glass {
+  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+  backdrop-filter: blur(6px);
+}
+
+.accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 300ms ease,
+    opacity 220ms ease;
+}
+
+.accordion-panel-inner {
+  overflow: hidden;
+}
+
+.accordion-panel.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  animation: accordion-open 280ms ease both;
+}
+
+.accordion-panel.is-closed {
+  animation: accordion-close 200ms ease both;
+}
+
+input,
+textarea,
+select {
+  caret-color: rgba(244, 244, 245, 0.9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .hover-lift:hover,
+  .hover-lift:focus-visible {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .pressable:active {
+    transform: none !important;
+  }
+
+  .accordion-panel {
+    transition: none !important;
+  }
+
+  .page-transition-enter,
+  .glow {
+    animation: none !important;
+  }
+}
