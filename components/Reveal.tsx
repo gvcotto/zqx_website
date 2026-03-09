@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 
@@ -31,7 +31,7 @@ export default function Reveal({ children, className, delay = 0 }: RevealProps) 
           }
         });
       },
-      { threshold: 0.14, rootMargin: "0px 0px -8% 0px" },
+      { threshold: 0.14, rootMargin: "0px 0px -6% 0px" },
     );
 
     observer.observe(node);
@@ -39,11 +39,7 @@ export default function Reveal({ children, className, delay = 0 }: RevealProps) 
   }, []);
 
   return (
-    <div
-      ref={ref}
-      className={`reveal${isVisible ? " is-visible" : ""}${className ? ` ${className}` : ""}`}
-      style={{ transitionDelay: `${delay}ms`, animationDelay: `${delay}ms` }}
-    >
+    <div ref={ref} className={`reveal${isVisible ? " is-visible" : ""}${className ? ` ${className}` : ""}`} style={{ transitionDelay: `${delay}ms` }}>
       {children}
     </div>
   );

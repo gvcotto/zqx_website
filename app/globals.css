@@ -1,163 +1,110 @@
-﻿@tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: dark; }
-
-body { @apply bg-zinc-950 text-zinc-100 antialiased; }
-
-.container { @apply mx-auto max-w-6xl px-4; }
-
-.glow {
-  background:
-    radial-gradient(600px circle at 20% 10%, rgba(56, 189, 248, 0.18), transparent 40%),
-    radial-gradient(700px circle at 80% 30%, rgba(168, 85, 247, 0.14), transparent 45%);
-  background-size: 108% 108%;
-  animation: glow-drift 10s ease-in-out infinite alternate;
+:root {
+  color-scheme: light;
+  --brand-blue: #1f6fff;
+  --brand-charcoal: #1f2328;
+  --brand-gray: #f4f6f8;
+  --brand-white: #ffffff;
+  --brand-border: #d7dde4;
+  --brand-muted: #5c6670;
 }
 
-@keyframes glow-drift {
-  0% {
-    background-position: 0% 0%, 100% 0%;
-  }
-  50% {
-    background-position: 2% 2%, 98% 3%;
-  }
-  100% {
-    background-position: 4% 4%, 96% 6%;
-  }
+html {
+  background: var(--brand-gray);
+}
+
+body {
+  @apply bg-brand-gray text-brand-charcoal antialiased;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+.container {
+  @apply mx-auto max-w-6xl px-5;
+}
+
+.glow {
+  background: var(--brand-white);
 }
 
 @keyframes page-enter {
   from {
     opacity: 0;
-    transform: translateY(6px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
 .page-transition-enter {
-  animation: page-enter 250ms ease-out both;
-}
-
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes blur-in {
-  from {
-    opacity: 0;
-    filter: blur(6px);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
-  }
-}
-
-@keyframes accordion-open {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes accordion-close {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
+  animation: page-enter 160ms ease-out both;
 }
 
 .reveal {
   opacity: 0;
-  transform: translateY(8px);
-  filter: blur(6px);
-  transition:
-    opacity 360ms ease,
-    transform 360ms ease,
-    filter 420ms ease;
-  will-change: opacity, transform, filter;
+  transition: opacity 220ms ease;
+  will-change: opacity;
 }
 
 .reveal.is-visible {
   opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-  animation:
-    fade-up 360ms ease both,
-    blur-in 420ms ease both;
 }
 
 .hover-lift {
   transition:
-    transform 240ms ease,
-    box-shadow 240ms ease,
-    border-color 240ms ease,
-    background-color 240ms ease;
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
 }
 
-.hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.35);
-}
-
+.hover-lift:hover,
 .hover-lift:focus-visible {
-  transform: translateY(-2px);
+  border-color: rgba(31, 111, 255, 0.22);
+  box-shadow: 0 14px 30px rgba(31, 35, 40, 0.06);
 }
 
 .pressable {
-  transition: transform 180ms ease;
-}
-
-.pressable:active {
-  transform: translateY(1px) scale(0.99);
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease;
 }
 
 .focus-ring {
   outline: none;
-  transition: box-shadow 180ms ease;
+  transition: box-shadow 160ms ease;
 }
 
 .focus-ring:focus-visible {
   box-shadow:
-    0 0 0 1px rgba(9, 9, 11, 0.8),
-    0 0 0 3px rgba(148, 163, 184, 0.45);
+    0 0 0 1px rgba(31, 35, 40, 0.08),
+    0 0 0 3px rgba(31, 111, 255, 0.22);
 }
 
 .nav-link {
   position: relative;
-  padding-bottom: 2px;
-  transition: color 180ms ease;
+  padding-bottom: 4px;
+  transition: color 160ms ease;
 }
 
 .nav-link::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -7px;
+  bottom: -6px;
   height: 2px;
   width: 100%;
   border-radius: 9999px;
-  background: rgba(244, 244, 245, 0.9);
+  background: var(--brand-blue);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 220ms ease, opacity 220ms ease;
-  opacity: 0.75;
+  transition: transform 180ms ease;
 }
 
 .nav-link:hover::after,
@@ -166,8 +113,7 @@ body { @apply bg-zinc-950 text-zinc-100 antialiased; }
 }
 
 .glass {
-  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
-  backdrop-filter: blur(6px);
+  background: var(--brand-white);
 }
 
 .accordion-panel {
@@ -175,8 +121,8 @@ body { @apply bg-zinc-950 text-zinc-100 antialiased; }
   grid-template-rows: 0fr;
   opacity: 0;
   transition:
-    grid-template-rows 300ms ease,
-    opacity 220ms ease;
+    grid-template-rows 220ms ease,
+    opacity 180ms ease;
 }
 
 .accordion-panel-inner {
@@ -186,17 +132,16 @@ body { @apply bg-zinc-950 text-zinc-100 antialiased; }
 .accordion-panel.is-open {
   grid-template-rows: 1fr;
   opacity: 1;
-  animation: accordion-open 280ms ease both;
 }
 
 .accordion-panel.is-closed {
-  animation: accordion-close 200ms ease both;
+  opacity: 0;
 }
 
 input,
 textarea,
 select {
-  caret-color: rgba(244, 244, 245, 0.9);
+  caret-color: var(--brand-blue);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -210,26 +155,5 @@ select {
 
   .reveal {
     opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-  }
-
-  .hover-lift:hover,
-  .hover-lift:focus-visible {
-    transform: none !important;
-    box-shadow: none !important;
-  }
-
-  .pressable:active {
-    transform: none !important;
-  }
-
-  .accordion-panel {
-    transition: none !important;
-  }
-
-  .page-transition-enter,
-  .glow {
-    animation: none !important;
   }
 }

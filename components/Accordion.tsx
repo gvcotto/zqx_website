@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import Reveal from "@/components/Reveal";
@@ -31,8 +31,8 @@ export default function Accordion({ items, labels }: AccordionProps) {
         const panelId = `${item.id}-panel`;
 
         return (
-          <Reveal key={item.id} delay={index * 70}>
-            <section className="glass rounded-3xl border border-white/10">
+          <Reveal key={item.id} delay={index * 60}>
+            <section className="glass rounded-3xl border border-brand-border">
               <h3>
                 <button
                   id={buttonId}
@@ -40,11 +40,11 @@ export default function Accordion({ items, labels }: AccordionProps) {
                   aria-expanded={isOpen}
                   aria-controls={panelId}
                   onClick={() => setOpenId((prev) => (prev === item.id ? null : item.id))}
-                  className="focus-ring pressable hover-lift flex w-full items-center justify-between gap-4 rounded-3xl px-5 py-4 text-left"
+                  className="focus-ring pressable flex w-full items-center justify-between gap-4 rounded-3xl px-5 py-4 text-left"
                 >
-                  <span className="text-base font-semibold text-zinc-100 md:text-lg">{item.title}</span>
+                  <span className="text-base font-semibold text-brand-charcoal md:text-lg">{item.title}</span>
                   <svg
-                    className={`h-5 w-5 shrink-0 text-zinc-300 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                    className={`h-5 w-5 shrink-0 text-brand-muted transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -65,8 +65,8 @@ export default function Accordion({ items, labels }: AccordionProps) {
                 <div className="accordion-panel-inner px-5 pb-5 pt-1">
                   <div className="grid gap-5 md:grid-cols-3">
                     <div>
-                      <p className="text-sm font-semibold text-zinc-100">{labels.deliverables}</p>
-                      <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-zinc-300">
+                      <p className="text-sm font-semibold text-brand-charcoal">{labels.deliverables}</p>
+                      <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-brand-muted">
                         {item.deliverables.map((entry) => (
                           <li key={entry}>{entry}</li>
                         ))}
@@ -74,8 +74,8 @@ export default function Accordion({ items, labels }: AccordionProps) {
                     </div>
 
                     <div>
-                      <p className="text-sm font-semibold text-zinc-100">{labels.tools}</p>
-                      <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-zinc-300">
+                      <p className="text-sm font-semibold text-brand-charcoal">{labels.tools}</p>
+                      <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-brand-muted">
                         {item.tools.map((entry) => (
                           <li key={entry}>{entry}</li>
                         ))}
@@ -83,8 +83,8 @@ export default function Accordion({ items, labels }: AccordionProps) {
                     </div>
 
                     <div>
-                      <p className="text-sm font-semibold text-zinc-100">{labels.engagement}</p>
-                      <p className="mt-2 text-sm text-zinc-300">{item.engagement}</p>
+                      <p className="text-sm font-semibold text-brand-charcoal">{labels.engagement}</p>
+                      <p className="mt-2 text-sm leading-6 text-brand-muted">{item.engagement}</p>
                     </div>
                   </div>
                 </div>

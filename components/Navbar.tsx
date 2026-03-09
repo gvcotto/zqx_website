@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -12,6 +12,7 @@ export default function Navbar({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 8);
@@ -19,6 +20,10 @@ export default function Navbar({ locale }: { locale: Locale }) {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
 
   const isActive = (segment: "services" | "about" | "contact") => {
     const base = `/${locale}/${segment}`;
@@ -29,42 +34,43 @@ export default function Navbar({ locale }: { locale: Locale }) {
   const strippedRaw = pathname.startsWith(localeBase) ? pathname.slice(localeBase.length) : pathname;
   const switchPath = strippedRaw === "/" || strippedRaw === "" ? "" : strippedRaw;
 
+  const linkClass = (segment: "services" | "about" | "contact") =>
+    `focus-ring pressable nav-link ${isActive(segment) ? "nav-link-active text-brand-charcoal" : "text-brand-muted hover:text-brand-charcoal"}`;
+
   return (
     <header
-      className={`sticky top-0 z-50 border-b backdrop-blur transition-colors duration-300 ${
-        isScrolled
-          ? "border-white/20 bg-zinc-950/85 shadow-sm shadow-black/30"
-          : "border-white/10 bg-zinc-950/60"
+      className={`sticky top-0 z-50 border-b transition-colors duration-200 ${
+        isScrolled ? "border-brand-border bg-brand-white/95" : "border-brand-border/80 bg-brand-white/90"
       }`}
     >
-      <div className="container flex h-16 items-center justify-between">
-        <Link href={`/${locale}`} className="focus-ring pressable rounded-md px-1 py-0.5 font-semibold tracking-tight">
+      <div className="container flex h-20 items-center justify-between gap-6">
+        <Link href={`/${locale}`} className="focus-ring pressable rounded-md px-1 py-0.5 text-lg font-semibold tracking-tight">
           {site.name}
         </Link>
 
-        <nav className="flex items-center gap-4 text-sm text-zinc-300">
-          <Link
-            href={`/${locale}/services`}
-            className={`focus-ring pressable nav-link ${isActive("services") ? "nav-link-active text-zinc-100" : ""}`}
+        <div className="hidden items-center gap-5 md:flex">
+          <nav className="flex items-center gap-5 text-sm">
+            <Link href={`/${locale}/services`} className={linkClass("services")}>
+              {t.nav.services}
+            </Link>
+            <Link href={`/${locale}/about`} className={linkClass("about")}>
+              {t.nav.about}
+            </Link>
+            <Link href={`/${locale}/contact`} className={linkClass("contact")}>
+              {t.nav.contact}
+            </Link>
+          </nav>
+
+          <a
+            href={`mailto:${site.email}`}
+            className="focus-ring pressable text-sm font-medium text-brand-muted hover:text-brand-charcoal"
           >
-            {t.nav.services}
-          </Link>
-          <Link
-            href={`/${locale}/about`}
-            className={`focus-ring pressable nav-link ${isActive("about") ? "nav-link-active text-zinc-100" : ""}`}
-          >
-            {t.nav.about}
-          </Link>
-          <Link
-            href={`/${locale}/contact`}
-            className={`focus-ring pressable nav-link ${isActive("contact") ? "nav-link-active text-zinc-100" : ""}`}
-          >
-            {t.nav.contact}
-          </Link>
+            {site.email}
+          </a>
 
           <a
             href={site.whatsapp}
-            className="focus-ring pressable hidden rounded-full border border-white/10 bg-white/5 px-4 py-2 text-white hover:bg-white/10 sm:inline-flex"
+            className="focus-ring pressable inline-flex rounded-full border border-brand-border bg-brand-white px-4 py-2 text-sm font-medium text-brand-charcoal hover:border-brand-blue"
             target="_blank"
             rel="noreferrer"
           >
@@ -72,8 +78,43 @@ export default function Navbar({ locale }: { locale: Locale }) {
           </a>
 
           <LocaleSwitcher locale={locale} pathname={switchPath} />
-        </nav>
+        </div>
+
+        <div className="flex items-center gap-3 md:hidden">
+          <LocaleSwitcher locale={locale} pathname={switchPath} />
+          <button
+            type="button"
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            className="focus-ring pressable inline-flex rounded-full border border-brand-border bg-brand-white px-4 py-2 text-sm font-medium text-brand-charcoal hover:border-brand-blue"
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-nav"
+          >
+            {isMenuOpen ? t.nav.close : t.nav.menu}
+          </button>
+        </div>
       </div>
+
+      {isMenuOpen ? (
+        <div id="mobile-nav" className="border-t border-brand-border bg-brand-white md:hidden">
+          <div className="container flex flex-col gap-4 py-5">
+            <Link href={`/${locale}/services`} className="text-sm font-medium text-brand-charcoal">
+              {t.nav.services}
+            </Link>
+            <Link href={`/${locale}/about`} className="text-sm font-medium text-brand-charcoal">
+              {t.nav.about}
+            </Link>
+            <Link href={`/${locale}/contact`} className="text-sm font-medium text-brand-charcoal">
+              {t.nav.contact}
+            </Link>
+            <a href={`mailto:${site.email}`} className="text-sm font-medium text-brand-charcoal">
+              {site.email}
+            </a>
+            <a href={site.whatsapp} target="_blank" rel="noreferrer" className="text-sm font-medium text-brand-charcoal">
+              {t.nav.whatsapp}
+            </a>
+          </div>
+        </div>
+      ) : null}
     </header>
   );
 }

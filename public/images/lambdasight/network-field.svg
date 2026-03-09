@@ -1,0 +1,33 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1200" fill="#F4F6F8"/>
+  <g opacity="0.8">
+    <path d="M128 214L342 168L516 284L758 198L964 322L1184 244L1410 356" stroke="#1F6FFF" stroke-width="4"/>
+    <path d="M204 612L428 480L666 564L888 448L1126 534L1354 430" stroke="#1F2328" stroke-width="3"/>
+    <path d="M152 926L354 814L614 888L862 760L1120 836L1386 708" stroke="#1F6FFF" stroke-width="3"/>
+  </g>
+  <g opacity="0.7">
+    <circle cx="128" cy="214" r="14" fill="#1F6FFF"/>
+    <circle cx="342" cy="168" r="10" fill="#FFFFFF" stroke="#1F6FFF" stroke-width="4"/>
+    <circle cx="516" cy="284" r="12" fill="#1F6FFF"/>
+    <circle cx="758" cy="198" r="11" fill="#FFFFFF" stroke="#1F2328" stroke-width="3"/>
+    <circle cx="964" cy="322" r="14" fill="#1F6FFF"/>
+    <circle cx="1184" cy="244" r="12" fill="#FFFFFF" stroke="#1F6FFF" stroke-width="4"/>
+    <circle cx="1410" cy="356" r="16" fill="#1F2328"/>
+    <circle cx="204" cy="612" r="14" fill="#1F2328"/>
+    <circle cx="428" cy="480" r="12" fill="#FFFFFF" stroke="#1F2328" stroke-width="3"/>
+    <circle cx="666" cy="564" r="15" fill="#1F6FFF"/>
+    <circle cx="888" cy="448" r="10" fill="#FFFFFF" stroke="#1F6FFF" stroke-width="4"/>
+    <circle cx="1126" cy="534" r="14" fill="#1F2328"/>
+    <circle cx="1354" cy="430" r="12" fill="#1F6FFF"/>
+    <circle cx="152" cy="926" r="12" fill="#1F6FFF"/>
+    <circle cx="354" cy="814" r="10" fill="#FFFFFF" stroke="#1F6FFF" stroke-width="4"/>
+    <circle cx="614" cy="888" r="14" fill="#1F2328"/>
+    <circle cx="862" cy="760" r="12" fill="#1F6FFF"/>
+    <circle cx="1120" cy="836" r="10" fill="#FFFFFF" stroke="#1F2328" stroke-width="3"/>
+    <circle cx="1386" cy="708" r="16" fill="#1F6FFF"/>
+  </g>
+  <g opacity="0.3" stroke="#1F2328" stroke-width="2">
+    <path d="M114 1086C240 1028 376 980 518 972C684 962 818 1018 962 1012C1132 1004 1272 930 1446 882"/>
+    <path d="M120 100C214 154 328 212 460 212C578 212 712 164 836 170C968 176 1092 238 1232 232C1328 228 1406 194 1484 156"/>
+  </g>
+</svg>

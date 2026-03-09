@@ -1,4 +1,4 @@
-﻿import Section from "@/components/Section";
+import Section from "@/components/Section";
 import ContactForm from "@/components/ContactForm";
 import Reveal from "@/components/Reveal";
 import { site } from "@/lib/site";
@@ -19,22 +19,22 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
           </Reveal>
 
           <Reveal delay={80}>
-            <div className="hover-lift h-fit rounded-3xl border border-white/10 bg-white/5 p-6">
+            <div className="h-fit rounded-3xl border border-brand-border bg-brand-white p-6">
               <div className="font-semibold">{t.contact.details}</div>
-              <div className="mt-3 text-sm text-zinc-300">
+              <div className="mt-4 space-y-3 text-sm leading-6 text-brand-muted">
                 <div>
-                  <span className="text-zinc-400">Email:</span>{" "}
-                  <a className="hover:text-white" href={`mailto:${site.email}`}>
+                  <span className="font-medium text-brand-charcoal">{t.contact.emailLabel}:</span>{" "}
+                  <a className="hover:text-brand-blue" href={`mailto:${site.email}`}>
                     {site.email}
                   </a>
                 </div>
-                <div className="mt-2">
-                  <a className="hover:text-white" href={site.whatsapp} target="_blank" rel="noreferrer">
+                <div>
+                  <a className="font-medium text-brand-charcoal hover:text-brand-blue" href={site.whatsapp} target="_blank" rel="noreferrer">
                     {t.nav.whatsapp}
                   </a>
                 </div>
-                <div className="mt-2">
-                  <span className="text-zinc-400">{t.contact.location}:</span> {site.location}
+                <div>
+                  <span className="font-medium text-brand-charcoal">{t.contact.location}:</span> {site.location}
                 </div>
               </div>
             </div>

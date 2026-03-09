@@ -1,4 +1,4 @@
-﻿import Section from "@/components/Section";
+import Section from "@/components/Section";
 import ServicesGrid from "@/components/ServicesGrid";
 import Accordion from "@/components/Accordion";
 import CTA from "@/components/CTA";
@@ -17,9 +17,9 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         <ServicesGrid locale={locale} />
 
         <Reveal className="mt-10">
-          <div className="mb-4 max-w-2xl">
-            <h3 className="text-xl font-semibold tracking-tight">{t.servicesAccordion.title}</h3>
-            <p className="mt-2 text-zinc-300">{t.servicesAccordion.subtitle}</p>
+          <div className="mb-4 max-w-3xl">
+            <h3 className="text-2xl font-semibold tracking-tight">{t.servicesAccordion.title}</h3>
+            <p className="mt-3 text-base leading-7 text-brand-muted">{t.servicesAccordion.subtitle}</p>
           </div>
 
           <Accordion
@@ -33,7 +33,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         </Reveal>
       </Section>
 
-      <section className="pb-16">
+      <section className="pb-12 md:pb-20">
         <div className="container">
           <Reveal>
             <CTA locale={locale} />
