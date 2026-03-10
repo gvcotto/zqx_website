@@ -38,12 +38,12 @@ export default function HeroVisualCard({ locale }: { locale: Locale }) {
       </div>
 
       <div className="pointer-events-none absolute inset-x-0 bottom-6 flex justify-center px-6 sm:px-8">
-        <div className="max-w-full rounded-full border border-brand-border bg-brand-white px-5 py-3 text-center text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-brand-charcoal shadow-[0_10px_20px_rgba(31,35,40,0.08)] sm:text-xs">
+        <div className="w-full max-w-[30rem] whitespace-normal rounded-[1.125rem] border border-brand-border bg-brand-charcoal px-4 py-3 text-center text-[0.56rem] font-semibold uppercase leading-[1.35] tracking-[0.08em] text-brand-white shadow-[0_10px_20px_rgba(31,35,40,0.12)] sm:px-5 sm:text-[0.67rem]">
           {t.home.hero.visualBadge}
         </div>
       </div>
 
-      <div className="h-14 sm:h-16" />
+      <div className="h-20 sm:h-[5.5rem]" />
     </div>
   );
 }

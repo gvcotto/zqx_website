@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -44,8 +45,19 @@ export default function Navbar({ locale }: { locale: Locale }) {
       }`}
     >
       <div className="container flex h-20 items-center justify-between gap-6">
-        <Link href={`/${locale}`} className="focus-ring pressable rounded-md px-1 py-0.5 text-lg font-semibold tracking-tight">
-          {site.name}
+        <Link
+          href={`/${locale}`}
+          className="focus-ring pressable inline-flex items-center gap-2.5 rounded-md px-1 py-0.5 text-base font-semibold tracking-tight sm:text-lg"
+        >
+          <Image
+            src="/images/ZQX_logo.svg"
+            alt="ZQX Digital Consulting"
+            width={144}
+            height={72}
+            className="h-7 w-auto sm:h-8"
+            priority
+          />
+          <span>{site.name}</span>
         </Link>
 
         <div className="hidden items-center gap-5 md:flex">

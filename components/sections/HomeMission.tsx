@@ -5,6 +5,14 @@ import Reveal from "@/components/Reveal";
 
 export default function HomeMission({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
+  const aiCaption =
+    locale === "es"
+      ? "Agentes IA | Inteligencia de red | Control digital"
+      : "AI Agents | Network Intelligence | Digital Control";
+  const neuralCaption =
+    locale === "es"
+      ? "Sistemas neuronales | Inteligencia de datos | Infraestructura escalable"
+      : "Neural Systems | Data Intelligence | Scalable Infrastructure";
 
   return (
     <section aria-labelledby="home-mission-title" className="border-b border-brand-border bg-brand-white py-12 md:py-20">
@@ -28,9 +36,12 @@ export default function HomeMission({ locale }: { locale: Locale }) {
                   alt="Abstract AI network visualization"
                   width={960}
                   height={720}
-                  className="h-full w-full object-cover"
+                  className="h-auto w-full object-cover"
                   priority
                 />
+                <figcaption className="border-t border-brand-border bg-brand-white px-4 py-3 text-center text-[0.58rem] font-semibold uppercase leading-[1.3] tracking-[0.08em] text-brand-charcoal sm:text-[0.63rem]">
+                  {aiCaption}
+                </figcaption>
               </figure>
               <figure className="overflow-hidden rounded-3xl border border-brand-border bg-brand-gray">
                 {/* TODO: replace placeholder with approved production image at /public/images/neural-brain-tech.jpg if available. */}
@@ -39,8 +50,11 @@ export default function HomeMission({ locale }: { locale: Locale }) {
                   alt="Digital neural systems visualization"
                   width={960}
                   height={720}
-                  className="h-full w-full object-cover"
+                  className="h-auto w-full object-cover"
                 />
+                <figcaption className="border-t border-brand-border bg-brand-white px-4 py-3 text-center text-[0.58rem] font-semibold uppercase leading-[1.3] tracking-[0.08em] text-brand-charcoal sm:text-[0.63rem]">
+                  {neuralCaption}
+                </figcaption>
               </figure>
             </div>
           </Reveal>
