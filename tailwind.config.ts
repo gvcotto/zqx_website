@@ -10,12 +10,12 @@ export default {
     extend: {
       colors: {
         brand: {
-          blue: "#1F6FFF",
-          charcoal: "#1F2328",
-          gray: "#F4F6F8",
+          blue: "#0F62FE",
+          charcoal: "#161616",
+          gray: "#F4F4F4",
           white: "#FFFFFF",
-          border: "#D7DDE4",
-          muted: "#5C6670",
+          border: "rgba(22, 22, 22, 0.12)",
+          muted: "#525252",
         },
       },
     },

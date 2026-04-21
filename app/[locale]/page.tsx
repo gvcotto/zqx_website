@@ -17,6 +17,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   const aboutCards = [
     { title: t.aboutVision.about.title, paragraphs: t.aboutVision.about.paragraphs },
     { title: t.aboutVision.vision.title, paragraphs: t.aboutVision.vision.paragraphs },
+    { title: t.aboutVision.team.title, paragraphs: t.aboutVision.team.paragraphs },
   ] as const;
 
   return (
@@ -34,10 +35,10 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
       </Section>
 
       <Section title={t.sections.aboutVisionTitle}>
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 lg:grid-cols-3">
           {aboutCards.map((card, index) => (
             <Reveal key={card.title} delay={index * 60}>
-              <article className="rounded-3xl border border-brand-border bg-brand-white p-7 md:p-8">
+              <article className="surface-card rounded-3xl border border-brand-border p-7 md:p-8">
                 <h3 className="text-xl font-semibold tracking-tight">{card.title}</h3>
                 <div className="mt-4 space-y-3 text-base leading-7 text-brand-muted">
                   {card.paragraphs.map((paragraph) => (

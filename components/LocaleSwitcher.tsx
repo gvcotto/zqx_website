@@ -40,7 +40,7 @@ export default function LocaleSwitcher({
   return (
     <Link
       href={`/${other}${pathname}`}
-      className="focus-ring pressable inline-flex items-center gap-2 rounded-full border border-brand-border bg-brand-white px-3 py-1.5 text-xs font-medium text-brand-charcoal hover:border-brand-blue"
+      className="focus-ring pressable surface-soft inline-flex items-center gap-2 rounded-full border border-brand-border px-3 py-1.5 text-xs font-medium text-brand-charcoal hover:border-brand-blue"
       aria-label={t.language.label}
       title={t.language.label}
     >

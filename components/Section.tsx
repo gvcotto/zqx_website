@@ -8,11 +8,11 @@ export default function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="py-12 md:py-20">
+    <section className="py-14 md:py-24">
       <div className="container">
-        <div className="max-w-3xl">
-          <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">{title}</h2>
-          {subtitle ? <p className="mt-4 text-base leading-7 text-brand-muted">{subtitle}</p> : null}
+        <div className="max-w-4xl">
+          <h2 className="text-3xl font-semibold tracking-[-0.03em] md:text-5xl">{title}</h2>
+          {subtitle ? <p className="mt-4 text-base leading-7 text-brand-muted md:text-lg">{subtitle}</p> : null}
         </div>
         <div className="mt-10">{children}</div>
       </div>

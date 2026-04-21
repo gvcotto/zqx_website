@@ -10,9 +10,9 @@ export default function Process({ locale }: { locale: Locale }) {
       {t.process.map((step, index) => (
         <li key={step.title}>
           <Reveal delay={index * 60}>
-            <div className="hover-lift rounded-2xl border border-brand-border bg-brand-white p-5">
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-blue">{index + 1}</div>
-              <div className="mt-3 font-semibold">{step.title}</div>
+            <div className="hover-lift surface-card rounded-[1.75rem] border border-brand-border p-5">
+              <div className="h-1.5 w-14 rounded-full bg-brand-blue/90" />
+              <div className="mt-4 font-semibold">{step.title}</div>
               <div className="mt-2 text-sm leading-6 text-brand-muted">{step.desc}</div>
             </div>
           </Reveal>

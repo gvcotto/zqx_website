@@ -3,7 +3,6 @@
 import { useState } from "react";
 import type { Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
-import { site } from "@/lib/site";
 
 export default function ContactForm({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
@@ -19,6 +18,7 @@ export default function ContactForm({ locale }: { locale: Locale }) {
       name: String(formData.get("name") ?? "").trim(),
       email: String(formData.get("email") ?? "").trim(),
       message: String(formData.get("message") ?? "").trim(),
+      locale,
     };
 
     try {
@@ -43,13 +43,10 @@ export default function ContactForm({ locale }: { locale: Locale }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="rounded-3xl border border-brand-border bg-brand-white p-6 md:p-8">
+    <form onSubmit={onSubmit} className="surface-card rounded-3xl border border-brand-border p-6 md:p-8">
       <div className="text-xl font-semibold tracking-tight">{t.contact.formTitle}</div>
       <div className="mt-2 text-sm text-brand-muted">
-        {t.contact.orEmail}{" "}
-        <a className="font-medium text-brand-charcoal hover:text-brand-blue" href={`mailto:${site.email}`}>
-          {site.email}
-        </a>
+        {t.contact.autoReply}. {t.contact.autoReplyDetail}
       </div>
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">
@@ -57,7 +54,7 @@ export default function ContactForm({ locale }: { locale: Locale }) {
           <span className="text-sm font-medium text-brand-muted">{t.contact.name}</span>
           <input
             name="name"
-            className="focus-ring rounded-xl border border-brand-border bg-brand-gray px-4 py-3 outline-none focus:border-brand-blue"
+            className="focus-ring input-surface rounded-xl border border-brand-border px-4 py-3 outline-none focus:border-brand-blue"
             required
           />
         </label>
@@ -67,7 +64,7 @@ export default function ContactForm({ locale }: { locale: Locale }) {
           <input
             name="email"
             type="email"
-            className="focus-ring rounded-xl border border-brand-border bg-brand-gray px-4 py-3 outline-none focus:border-brand-blue"
+            className="focus-ring input-surface rounded-xl border border-brand-border px-4 py-3 outline-none focus:border-brand-blue"
             required
           />
         </label>
@@ -77,7 +74,7 @@ export default function ContactForm({ locale }: { locale: Locale }) {
           <textarea
             name="message"
             rows={5}
-            className="focus-ring rounded-xl border border-brand-border bg-brand-gray px-4 py-3 outline-none focus:border-brand-blue"
+            className="focus-ring input-surface rounded-xl border border-brand-border px-4 py-3 outline-none focus:border-brand-blue"
             required
           />
         </label>
@@ -86,7 +83,7 @@ export default function ContactForm({ locale }: { locale: Locale }) {
       <div className="mt-5">
         <button
           disabled={status === "sending"}
-          className="focus-ring pressable inline-flex rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-brand-white hover:bg-[#195dd6] disabled:cursor-not-allowed disabled:opacity-70"
+          className="focus-ring pressable inline-flex rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-brand-white hover:bg-[#0043ce] disabled:cursor-not-allowed disabled:opacity-70"
         >
           {status === "sending" ? t.contact.sending : t.contact.send}
         </button>
