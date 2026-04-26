@@ -4,6 +4,7 @@ import Reveal from "@/components/Reveal";
 import { site } from "@/lib/site";
 import { isLocale, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
+import { titleCase } from "@/lib/text";
 
 export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
@@ -20,7 +21,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
 
           <Reveal delay={80}>
             <div className="surface-card h-fit rounded-3xl border border-brand-border p-6">
-              <div className="font-semibold">{t.contact.details}</div>
+              <div className="font-semibold">{titleCase(t.contact.details)}</div>
               <div className="mt-4 space-y-3 text-sm leading-6 text-brand-muted">
                 <div>
                   <span className="font-medium text-brand-charcoal">{t.contact.autoReply}:</span> {t.contact.autoReplyDetail}

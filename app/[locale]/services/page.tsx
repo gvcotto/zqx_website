@@ -5,6 +5,7 @@ import CTA from "@/components/CTA";
 import Reveal from "@/components/Reveal";
 import { isLocale, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
+import { titleCase } from "@/lib/text";
 
 export default async function ServicesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
@@ -18,7 +19,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
 
         <Reveal className="mt-10">
           <div className="mb-4 max-w-3xl">
-            <h3 className="text-2xl font-semibold tracking-[-0.03em] md:text-3xl">{t.servicesAccordion.title}</h3>
+            <h3 className="text-2xl font-semibold tracking-[-0.03em] md:text-3xl">{titleCase(t.servicesAccordion.title)}</h3>
             <p className="mt-3 text-base leading-7 text-brand-muted">{t.servicesAccordion.subtitle}</p>
           </div>
 

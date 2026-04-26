@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
+import { titleCase } from "@/lib/text";
 import Reveal from "@/components/Reveal";
 import HeroVisualCard from "@/components/hero/HeroVisualCard";
 
@@ -17,7 +18,7 @@ export default function Hero({ locale }: { locale: Locale }) {
             </p>
 
             <h1 className="mt-7 max-w-4xl text-4xl font-semibold tracking-[-0.04em] md:text-6xl lg:text-[4.5rem]">
-              {t.home.hero.title}
+              {titleCase(t.home.hero.title)}
             </h1>
 
             <p className="mt-6 max-w-3xl text-lg leading-8 text-brand-muted md:text-xl">{t.home.hero.subtitle}</p>
@@ -46,9 +47,9 @@ export default function Hero({ locale }: { locale: Locale }) {
 
         <div className="mt-12 grid gap-4 md:grid-cols-3">
           {t.hero.highlights.map((item, index) => (
-            <Reveal key={item.title} delay={index * 60}>
-              <div className="hover-lift surface-card rounded-[1.75rem] border border-brand-border p-5 md:p-6">
-                <div className="text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-brand-blue">{item.title}</div>
+            <Reveal key={item.title} delay={index * 60} className="h-full">
+              <div className="hover-lift surface-card flex h-full min-h-[9.5rem] flex-col rounded-[1.75rem] border border-brand-border p-5 md:p-6">
+                <div className="text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-brand-blue">{titleCase(item.title)}</div>
                 <div className="mt-3 text-sm leading-6 text-brand-muted">{item.desc}</div>
               </div>
             </Reveal>

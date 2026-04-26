@@ -6,8 +6,8 @@ export default function HeroVisualCard({ locale }: { locale: Locale }) {
   const cards =
     locale === "es"
       ? [
-          { label: "Entrada", value: "Sistemas y workflows del negocio" },
-          { label: "Modelo", value: "Gobierno y diseno operativo" },
+          { label: "Entrada", value: "Sistemas y flujos del negocio" },
+          { label: "Modelo", value: "Gobierno y diseño operativo" },
           { label: "Salida", value: "Entrega conectada a operaciones" },
         ]
       : [
@@ -15,7 +15,7 @@ export default function HeroVisualCard({ locale }: { locale: Locale }) {
           { label: "Model", value: "Governance and operating design" },
           { label: "Output", value: "Delivery connected to operations" },
         ];
-  const orchestrationLabel = locale === "es" ? "Mapa de orquestacion" : "Orchestration map";
+  const orchestrationLabel = locale === "es" ? "Mapa de orquestación" : "Orchestration map";
   const runLabel = locale === "es" ? "Operando hoy" : "Running today";
 
   return (
@@ -28,30 +28,86 @@ export default function HeroVisualCard({ locale }: { locale: Locale }) {
       <div className="surface-soft relative mt-4 rounded-[1.6rem] border border-brand-border px-4 py-5 sm:px-6 sm:py-6">
         <svg viewBox="0 0 560 420" className="h-auto w-full" role="img" aria-label={t.home.hero.visualBadge}>
           <title>{t.home.hero.visualBadge}</title>
-          <g stroke="#525252" strokeWidth="4" fill="none" strokeLinecap="round">
-            <path d="M116 100L282 72" />
+          <defs>
+            <linearGradient id="orchestration-active-line" x1="80" x2="440" y1="60" y2="340" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="rgba(15,98,254,0.95)" />
+              <stop offset="100%" stopColor="rgba(36,214,138,0.9)" />
+            </linearGradient>
+            <filter id="orchestration-node-shadow" x="-40%" y="-40%" width="180%" height="180%">
+              <feDropShadow dx="0" dy="10" stdDeviation="10" floodColor="rgba(15,23,42,0.18)" />
+            </filter>
+          </defs>
+
+          <g stroke="#525252" strokeWidth="4" fill="none" strokeLinecap="round" opacity="0.34">
+            <path id="orchestration-route-input-model" d="M116 100L282 72" />
             <path d="M116 100L188 222" />
-            <path d="M282 72L418 136" />
+            <path id="orchestration-route-model-signal" d="M282 72L418 136" />
             <path d="M282 72L284 208" />
             <path d="M188 222L284 208" />
             <path d="M188 222L120 324" />
-            <path d="M284 208L418 136" />
-            <path d="M284 208L386 302" />
+            <path id="orchestration-route-core-signal" d="M284 208L418 136" />
+            <path id="orchestration-route-core-output" d="M284 208L386 302" />
             <path d="M284 208L230 338" />
             <path d="M418 136L386 302" />
-            <path d="M120 324L230 338" />
+            <path id="orchestration-route-bottom" d="M120 324L230 338" />
             <path d="M230 338L386 302" />
           </g>
 
+          <g stroke="url(#orchestration-active-line)" strokeWidth="4.5" fill="none" strokeLinecap="round" strokeDasharray="10 16" opacity="0.9">
+            <path d="M116 100L282 72">
+              <animate attributeName="stroke-dashoffset" from="0" to="-52" dur="3.2s" repeatCount="indefinite" />
+            </path>
+            <path d="M282 72L418 136">
+              <animate attributeName="stroke-dashoffset" from="0" to="-52" dur="3.8s" repeatCount="indefinite" />
+            </path>
+            <path d="M284 208L418 136">
+              <animate attributeName="stroke-dashoffset" from="0" to="-52" dur="3.5s" repeatCount="indefinite" />
+            </path>
+            <path d="M284 208L386 302">
+              <animate attributeName="stroke-dashoffset" from="0" to="-52" dur="4s" repeatCount="indefinite" />
+            </path>
+            <path d="M120 324L230 338">
+              <animate attributeName="stroke-dashoffset" from="0" to="-52" dur="4.3s" repeatCount="indefinite" />
+            </path>
+          </g>
+
           <g>
-            <circle cx="116" cy="100" r="18" fill="#f4f4f4" stroke="#0F62FE" strokeWidth="6" />
-            <circle cx="282" cy="72" r="20" fill="#ffffff" stroke="#0F62FE" strokeWidth="6" />
-            <circle cx="418" cy="136" r="18" fill="#f4f4f4" stroke="#0F62FE" strokeWidth="6" />
-            <circle cx="188" cy="222" r="16" fill="#ffffff" stroke="#0F62FE" strokeWidth="6" />
-            <circle cx="284" cy="208" r="22" fill="#f4f4f4" stroke="#0F62FE" strokeWidth="6" />
-            <circle cx="386" cy="302" r="18" fill="#ffffff" stroke="#0F62FE" strokeWidth="6" />
-            <circle cx="230" cy="338" r="16" fill="#f4f4f4" stroke="#0F62FE" strokeWidth="6" />
-            <circle cx="120" cy="324" r="14" fill="#ffffff" stroke="#0F62FE" strokeWidth="6" />
+            {[
+              { route: "orchestration-route-input-model", color: "#0F62FE", delay: "0s", duration: "4.2s" },
+              { route: "orchestration-route-model-signal", color: "#24D68A", delay: "0.8s", duration: "4.6s" },
+              { route: "orchestration-route-core-output", color: "#0F62FE", delay: "1.5s", duration: "4.8s" },
+              { route: "orchestration-route-bottom", color: "#24D68A", delay: "2.2s", duration: "5.1s" },
+            ].map((signal) => (
+              <circle key={signal.route} r="7" fill={signal.color}>
+                <animateMotion dur={signal.duration} begin={signal.delay} repeatCount="indefinite" rotate="auto">
+                  <mpath href={`#${signal.route}`} />
+                </animateMotion>
+                <animate attributeName="opacity" values="0;1;1;0" dur={signal.duration} begin={signal.delay} repeatCount="indefinite" />
+              </circle>
+            ))}
+          </g>
+
+          <g filter="url(#orchestration-node-shadow)">
+            {[
+              { x: 116, y: 100, r: 18, fill: "#f4f4f4", delay: "0s" },
+              { x: 282, y: 72, r: 20, fill: "#ffffff", delay: "0.3s" },
+              { x: 418, y: 136, r: 18, fill: "#f4f4f4", delay: "0.6s" },
+              { x: 188, y: 222, r: 16, fill: "#ffffff", delay: "0.9s" },
+              { x: 284, y: 208, r: 22, fill: "#f4f4f4", delay: "1.2s" },
+              { x: 386, y: 302, r: 18, fill: "#ffffff", delay: "1.5s" },
+              { x: 230, y: 338, r: 16, fill: "#f4f4f4", delay: "1.8s" },
+              { x: 120, y: 324, r: 14, fill: "#ffffff", delay: "2.1s" },
+            ].map((node) => (
+              <g key={`${node.x}-${node.y}`}>
+                <circle cx={node.x} cy={node.y} r={node.r + 11} fill="rgba(15,98,254,0.12)">
+                  <animate attributeName="r" values={`${node.r + 5};${node.r + 13};${node.r + 5}`} dur="4.6s" begin={node.delay} repeatCount="indefinite" />
+                </circle>
+                <circle cx={node.x} cy={node.y} r={node.r} fill={node.fill} stroke="#0F62FE" strokeWidth="6" />
+                <circle cx={node.x} cy={node.y} r="5" fill="#24D68A">
+                  <animate attributeName="opacity" values="0.35;1;0.35" dur="3.4s" begin={node.delay} repeatCount="indefinite" />
+                </circle>
+              </g>
+            ))}
           </g>
         </svg>
 

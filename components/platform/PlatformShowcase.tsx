@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { startTransition, useMemo, useState } from "react";
+import { startTransition, useEffect, useMemo, useState } from "react";
 import type { Dictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
+import { titleCase } from "@/lib/text";
 import Reveal from "@/components/Reveal";
 
 type PlatformShowcaseProps = {
@@ -18,6 +19,13 @@ type ChartPoint = {
   y: number;
   value: number;
   label: string;
+};
+
+type WorkflowStep = {
+  label: string;
+  value: number;
+  unit: string;
+  tone: "blue" | "green" | "muted";
 };
 
 const DASHBOARD_SERIES = [2480, 2620, 1040, 1960, 1810, 2250, 990, 3050, 1420, 1880, 1705, 2140, 4250, 1790, 2280, 1650, 2040, 1980];
@@ -54,6 +62,24 @@ const CHART_COLORS = {
   grid: "rgba(22,22,22,0.12)",
 };
 
+const WORKFLOW_TONES: Record<WorkflowStep["tone"], { fill: string; glow: string; stroke: string }> = {
+  blue: {
+    fill: "#0F62FE",
+    glow: "rgba(15,98,254,0.18)",
+    stroke: "rgba(15,98,254,0.58)",
+  },
+  green: {
+    fill: "#24D68A",
+    glow: "rgba(36,214,138,0.2)",
+    stroke: "rgba(36,214,138,0.68)",
+  },
+  muted: {
+    fill: "#525252",
+    glow: "rgba(82,82,82,0.14)",
+    stroke: "rgba(82,82,82,0.42)",
+  },
+};
+
 type PlatformUiStrings = {
   revenue: string;
   capabilities: string;
@@ -65,6 +91,12 @@ type PlatformUiStrings = {
   assistantReply: string;
   actionItems: string[];
   forecastAxis: string[];
+  workflow: {
+    laneLabel: string;
+    throughputLabel: string;
+    liveLabel: string;
+    steps: WorkflowStep[];
+  };
 };
 
 function getPlatformUi(locale: Locale): PlatformUiStrings {
@@ -80,6 +112,17 @@ function getPlatformUi(locale: Locale): PlatformUiStrings {
       assistantReply: "Resumen listo. Incluye acciones sugeridas y anomalias detectadas.",
       actionItems: ["Sincronizar resumen predictivo", "Actualizar workspace comercial", "Compartir reporte semanal"],
       forecastAxis: ["Ago '23", "08 Ago", "16 Ago", "24 Ago", "Sep", "04 Sep", "12 Sep", "16 Sep"],
+      workflow: {
+        laneLabel: "Workflow vivo",
+        throughputLabel: "datos/min",
+        liveLabel: "Activo",
+        steps: [
+          { label: "Entrada", value: 72, unit: "docs", tone: "blue" },
+          { label: "Validar", value: 48, unit: "checks", tone: "green" },
+          { label: "Aprobar", value: 31, unit: "ok", tone: "blue" },
+          { label: "Reporte", value: 96, unit: "sync", tone: "green" },
+        ],
+      },
     };
   }
 
@@ -94,6 +137,17 @@ function getPlatformUi(locale: Locale): PlatformUiStrings {
     assistantReply: "Summary ready. Suggested actions and anomalies are included.",
     actionItems: ["Sync forecast summary", "Update sales workspace", "Share weekly report"],
     forecastAxis: ["Aug '23", "08 Aug", "16 Aug", "24 Aug", "Sep", "04 Sep", "12 Sep", "16 Sep"],
+    workflow: {
+      laneLabel: "Live workflow",
+      throughputLabel: "data/min",
+      liveLabel: "Live",
+      steps: [
+        { label: "Intake", value: 72, unit: "docs", tone: "blue" },
+        { label: "Validate", value: 48, unit: "checks", tone: "green" },
+        { label: "Approve", value: 31, unit: "ok", tone: "blue" },
+        { label: "Report", value: 96, unit: "sync", tone: "green" },
+      ],
+    },
   };
 }
 
@@ -151,6 +205,7 @@ function DashboardVisualization({
   compact?: boolean;
 }) {
   const [activeIndex, setActiveIndex] = useState(12);
+  const [isPaused, setIsPaused] = useState(false);
   const width = compact ? 560 : 720;
   const height = compact ? 280 : 360;
   const padding = useMemo(
@@ -164,18 +219,30 @@ function DashboardVisualization({
   const activePoint = points[activeIndex] ?? points[points.length - 1];
   const minValue = Math.min(...DASHBOARD_SERIES);
   const maxValue = Math.max(...DASHBOARD_SERIES);
+  const dashboardPathId = compact ? "dashboard-live-path-compact" : "dashboard-live-path";
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion || isPaused) return;
+
+    const interval = window.setInterval(() => {
+      setActiveIndex((index) => (index + 1) % DASHBOARD_SERIES.length);
+    }, compact ? 1350 : 1550);
+
+    return () => window.clearInterval(interval);
+  }, [compact, isPaused]);
 
   return (
     <article
       className={`surface-card relative overflow-hidden rounded-[2rem] border border-brand-border ${compact ? "p-5" : "p-6 md:p-7"}`}
-      onMouseLeave={() => setActiveIndex(12)}
+      onMouseLeave={() => setIsPaused(false)}
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(15,98,254,0.12),transparent_32%)]" />
       <div className="relative">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="max-w-xl">
             <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-brand-blue">{platform.dashboard.eyebrow}</p>
-            {!compact ? <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em] md:text-3xl">{platform.dashboard.title}</h2> : null}
+            {!compact ? <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em] md:text-3xl">{titleCase(platform.dashboard.title)}</h2> : null}
             {!compact ? <p className="mt-3 text-sm leading-6 text-brand-muted md:text-base">{platform.dashboard.body}</p> : null}
           </div>
 
@@ -187,7 +254,7 @@ function DashboardVisualization({
         </div>
 
         <div className={`mt-5 ${compact ? "" : "grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(16rem,0.8fr)] lg:items-start"}`}>
-          <div className="surface-soft relative overflow-hidden rounded-[1.6rem] border border-brand-border px-3 py-3 md:px-4 md:py-4">
+          <div className="surface-soft relative overflow-hidden rounded-[1.6rem] border border-brand-border px-3 py-3 md:px-4 md:py-4" onMouseLeave={() => setIsPaused(false)}>
             <div className="flex items-center justify-between gap-4 px-2 pb-2">
               <div>
                 <div className="text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-brand-muted">{platform.dashboard.chartLabel}</div>
@@ -199,7 +266,7 @@ function DashboardVisualization({
               </div>
             </div>
 
-            <svg viewBox={`0 0 ${width} ${height}`} className="h-auto w-full" role="img" aria-label={platform.dashboard.title}>
+            <svg viewBox={`0 0 ${width} ${height}`} className="h-auto w-full" role="img" aria-label={titleCase(platform.dashboard.title)}>
               <defs>
                 <linearGradient id={compact ? "dashboard-area-compact" : "dashboard-area"} x1="0" x2="0" y1="0" y2="1">
                   <stop offset="0%" stopColor="rgba(15,98,254,0.30)" />
@@ -223,14 +290,51 @@ function DashboardVisualization({
                 );
               })}
 
-              <path d={areaPath} fill={`url(#${compact ? "dashboard-area-compact" : "dashboard-area"})`} />
-              <path d={linePath} fill="none" stroke={CHART_COLORS.blueStroke} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+              <path d={areaPath} fill={`url(#${compact ? "dashboard-area-compact" : "dashboard-area"})`}>
+                <animate attributeName="opacity" values="0.68;1;0.68" dur="4.8s" repeatCount="indefinite" />
+              </path>
+              <path id={dashboardPathId} d={linePath} fill="none" stroke={CHART_COLORS.blueStroke} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+              <path d={linePath} fill="none" stroke="rgba(15,98,254,0.34)" strokeWidth="9" strokeDasharray="1 28" strokeLinecap="round" strokeLinejoin="round">
+                <animate attributeName="stroke-dashoffset" from="0" to="-58" dur="2.6s" repeatCount="indefinite" />
+              </path>
+
+              {activePoint ? (
+                <line
+                  x1={activePoint.x}
+                  x2={activePoint.x}
+                  y1={padding.top}
+                  y2={height - padding.bottom}
+                  stroke="rgba(15,98,254,0.18)"
+                  strokeWidth="2"
+                  strokeDasharray="5 7"
+                  className="transition-all duration-700 ease-out"
+                />
+              ) : null}
+
+              {[0, 1].map((packetIndex) => (
+                <circle key={`dashboard-packet-${packetIndex}`} r={packetIndex === 0 ? 4.5 : 3.5} fill={packetIndex === 0 ? CHART_COLORS.blue : CHART_COLORS.green} opacity="0.86">
+                  <animateMotion dur={packetIndex === 0 ? "5.8s" : "7.1s"} begin={`${packetIndex * 1.4}s`} repeatCount="indefinite" rotate="auto">
+                    <mpath href={`#${dashboardPathId}`} />
+                  </animateMotion>
+                  <animate attributeName="opacity" values="0;0.9;0.9;0" dur={packetIndex === 0 ? "5.8s" : "7.1s"} begin={`${packetIndex * 1.4}s`} repeatCount="indefinite" />
+                </circle>
+              ))}
 
               {points.map((point, index) => (
                 <g key={point.label}>
                   <circle cx={point.x} cy={point.y} r={index === activeIndex ? 8 : 0} fill="rgba(15,98,254,0.14)" />
                   <circle cx={point.x} cy={point.y} r={index === activeIndex ? 5 : 3} fill={CHART_COLORS.blue} />
-                  <circle cx={point.x} cy={point.y} r="14" fill="transparent" onMouseEnter={() => setActiveIndex(index)} style={{ cursor: "pointer" }} />
+                  <circle
+                    cx={point.x}
+                    cy={point.y}
+                    r="14"
+                    fill="transparent"
+                    onMouseEnter={() => {
+                      setIsPaused(true);
+                      setActiveIndex(index);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  />
                 </g>
               ))}
 
@@ -248,7 +352,7 @@ function DashboardVisualization({
 
             {activePoint ? (
               <div
-                className="pointer-events-none absolute z-10 hidden min-w-[10rem] -translate-x-1/2 rounded-2xl border border-brand-border bg-white/92 px-4 py-3 text-sm shadow-[0_12px_32px_rgba(15,23,42,0.12)] backdrop-blur-md md:block"
+                className="pointer-events-none absolute z-10 hidden min-w-[10rem] -translate-x-1/2 rounded-2xl border border-brand-border bg-white/92 px-4 py-3 text-sm shadow-[0_12px_32px_rgba(15,23,42,0.12)] backdrop-blur-md transition-all duration-700 ease-out md:block"
                 style={{
                   left: `${(activePoint.x / width) * 100}%`,
                   top: `calc(${(activePoint.y / height) * 100}% - 1.5rem)`,
@@ -342,7 +446,7 @@ function ForecastVisualization({
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(36,214,138,0.16),transparent_30%)]" />
       <div className="relative">
         <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-brand-blue">{platform.forecast.eyebrow}</p>
-        {!compact ? <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em] md:text-3xl">{platform.forecast.title}</h2> : null}
+        {!compact ? <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em] md:text-3xl">{titleCase(platform.forecast.title)}</h2> : null}
         {!compact ? <p className="mt-3 max-w-2xl text-sm leading-6 text-brand-muted md:text-base">{platform.forecast.body}</p> : null}
 
         {!compact ? (
@@ -370,7 +474,7 @@ function ForecastVisualization({
             {!compact ? <div className="text-sm text-brand-muted">{platform.forecast.tooltipDate}</div> : null}
           </div>
 
-          <svg viewBox={`0 0 ${width} ${height}`} className="h-auto w-full" role="img" aria-label={platform.forecast.title}>
+          <svg viewBox={`0 0 ${width} ${height}`} className="h-auto w-full" role="img" aria-label={titleCase(platform.forecast.title)}>
             <defs>
               <linearGradient id={compact ? "forecast-history-compact" : "forecast-history"} x1="0" x2="0" y1="0" y2="1">
                 <stop offset="0%" stopColor="rgba(15,98,254,0.22)" />
@@ -464,7 +568,7 @@ function AssistantVisualization({
         <div className="flex items-start justify-between gap-4">
           <div className="max-w-2xl">
             <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-brand-blue">{platform.assistant.eyebrow}</p>
-            {!compact ? <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em] md:text-3xl">{platform.assistant.title}</h2> : null}
+            {!compact ? <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em] md:text-3xl">{titleCase(platform.assistant.title)}</h2> : null}
             {!compact ? <p className="mt-3 text-sm leading-6 text-brand-muted md:text-base">{platform.assistant.body}</p> : null}
           </div>
           <div className="surface-soft rounded-full border border-brand-border px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-brand-muted">{ui.liveContext}</div>
@@ -527,13 +631,48 @@ function AssistantVisualization({
 
 function ModuleVisual({ index, ui }: { index: number; ui: PlatformUiStrings }) {
   if (index === 0) {
+    const dashboardPreviewValues = DASHBOARD_SERIES.slice(10, 16);
+    const maxDashboardPreviewValue = Math.max(...dashboardPreviewValues);
+    const dashboardPreviewPath = "M20 84L66 64L112 78L158 38L204 90L252 54";
+
     return (
       <div className="relative h-28 overflow-hidden rounded-[1.2rem] border border-brand-border bg-[linear-gradient(180deg,rgba(15,98,254,0.10),rgba(15,98,254,0.02))]">
-        <div className="absolute inset-x-3 bottom-4 flex items-end gap-2">
-          {[28, 50, 36, 64, 42, 54].map((height, pointIndex) => (
-            <div key={height} className="flex-1 rounded-t-md bg-brand-blue/70" style={{ height: `${height}%`, opacity: 0.55 + pointIndex * 0.05 }} />
-          ))}
-        </div>
+        <svg viewBox="0 0 280 120" className="h-full w-full" aria-hidden="true">
+          <defs>
+            <linearGradient id="dashboard-module-fill" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stopColor="rgba(15,98,254,0.28)" />
+              <stop offset="100%" stopColor="rgba(15,98,254,0.03)" />
+            </linearGradient>
+          </defs>
+
+          <path d={`${dashboardPreviewPath} L252 101 L20 101 Z`} fill="url(#dashboard-module-fill)">
+            <animate attributeName="opacity" values="0.6;1;0.6" dur="4.6s" repeatCount="indefinite" />
+          </path>
+          <path id="dashboard-module-path" d={dashboardPreviewPath} fill="none" stroke="#0F62FE" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+          <path d={dashboardPreviewPath} fill="none" stroke="rgba(15,98,254,0.28)" strokeWidth="8" strokeDasharray="1 24" strokeLinecap="round">
+            <animate attributeName="stroke-dashoffset" from="0" to="-48" dur="2.8s" repeatCount="indefinite" />
+          </path>
+
+          {dashboardPreviewValues.map((value, pointIndex) => {
+            const barHeight = 20 + (value / maxDashboardPreviewValue) * 50;
+            const x = 24 + pointIndex * 40;
+            const y = 102 - barHeight;
+
+            return (
+              <rect key={value} x={x} y={y} width="18" height={barHeight} rx="5" fill="rgba(15,98,254,0.22)">
+                <animate attributeName="height" values={`${barHeight * 0.72};${barHeight};${barHeight * 0.84};${barHeight}`} dur={`${3 + pointIndex * 0.25}s`} repeatCount="indefinite" />
+                <animate attributeName="y" values={`${102 - barHeight * 0.72};${y};${102 - barHeight * 0.84};${y}`} dur={`${3 + pointIndex * 0.25}s`} repeatCount="indefinite" />
+              </rect>
+            );
+          })}
+
+          <circle r="4.5" fill="#24D68A">
+            <animateMotion dur="5.2s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#dashboard-module-path" />
+            </animateMotion>
+            <animate attributeName="opacity" values="0;0.95;0.95;0" dur="5.2s" repeatCount="indefinite" />
+          </circle>
+        </svg>
       </div>
     );
   }
@@ -558,20 +697,100 @@ function ModuleVisual({ index, ui }: { index: number; ui: PlatformUiStrings }) {
     );
   }
 
+  const workflowSteps = ui.workflow.steps.slice(0, 4);
+  const maxWorkflowValue = Math.max(...workflowSteps.map((step) => step.value), 1);
+  const workflowThroughput = Math.max(...workflowSteps.map((step) => step.value));
+  const workflowRoute = "M22 68 C70 38 104 38 138 68 S210 98 258 62";
+  const nodePositions = [
+    { x: 30, y: 68 },
+    { x: 104, y: 42 },
+    { x: 178, y: 86 },
+    { x: 250, y: 62 },
+  ];
+
   return (
-    <div className="relative h-28 overflow-hidden rounded-[1.2rem] border border-brand-border bg-[linear-gradient(180deg,rgba(15,98,254,0.08),rgba(36,214,138,0.06))] p-3">
-      <div className="flex h-full items-center justify-between gap-4">
-        <div className="grid gap-2">
-          <div className="h-3 w-20 rounded-full bg-brand-blue/50" />
-          <div className="h-3 w-28 rounded-full bg-brand-blue/25" />
-          <div className="h-3 w-16 rounded-full bg-brand-blue/18" />
-        </div>
-        <div className="grid place-items-center rounded-full border border-brand-border bg-white/82 p-4 shadow-[0_12px_22px_rgba(15,23,42,0.10)]">
-          <svg viewBox="0 0 24 24" className="h-6 w-6 text-brand-blue" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 7.5V16.5L16.5 12L9 7.5Z" fill="currentColor" />
-          </svg>
-        </div>
+    <div className="relative h-32 overflow-hidden rounded-[1.2rem] border border-brand-border bg-[linear-gradient(180deg,rgba(15,98,254,0.08),rgba(36,214,138,0.06))]">
+      <div className="absolute inset-x-3 top-2.5 z-10 flex items-center justify-between gap-3 text-[0.58rem] font-semibold uppercase tracking-[0.15em]">
+        <span className="inline-flex items-center gap-1.5 text-brand-muted">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#24D68A]" />
+          {ui.workflow.liveLabel}
+        </span>
+        <span className="text-brand-blue">
+          {workflowThroughput} {ui.workflow.throughputLabel}
+        </span>
       </div>
+
+      <svg viewBox="0 0 280 136" className="absolute inset-0 h-full w-full" aria-hidden="true">
+        <defs>
+          <linearGradient id="workflow-route-gradient" x1="20" x2="260" y1="0" y2="136" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="rgba(15,98,254,0.76)" />
+            <stop offset="100%" stopColor="rgba(36,214,138,0.82)" />
+          </linearGradient>
+          <filter id="workflow-soft-shadow" x="-30%" y="-30%" width="160%" height="160%">
+            <feDropShadow dx="0" dy="8" stdDeviation="7" floodColor="rgba(15,23,42,0.18)" />
+          </filter>
+        </defs>
+
+        <path d={workflowRoute} fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="10" strokeLinecap="round" />
+        <path id="workflow-data-route" d={workflowRoute} fill="none" stroke="url(#workflow-route-gradient)" strokeWidth="3.2" strokeDasharray="7 9" strokeLinecap="round">
+          <animate attributeName="stroke-dashoffset" from="0" to="-45" dur="2.8s" repeatCount="indefinite" />
+        </path>
+
+        {workflowSteps.map((step, stepIndex) => {
+          const tone = WORKFLOW_TONES[step.tone];
+          const position = nodePositions[stepIndex] ?? nodePositions[nodePositions.length - 1];
+          const weight = step.value / maxWorkflowValue;
+          const radius = 5.5 + weight * 3.8;
+
+          return (
+            <g key={step.label} filter="url(#workflow-soft-shadow)">
+              <circle cx={position.x} cy={position.y} r={radius + 5} fill={tone.glow}>
+                <animate attributeName="r" values={`${radius + 4};${radius + 7};${radius + 4}`} dur={`${3.2 + stepIndex * 0.35}s`} repeatCount="indefinite" />
+              </circle>
+              <circle cx={position.x} cy={position.y} r={radius + 3} fill="rgba(255,255,255,0.94)" stroke={tone.stroke} strokeWidth="1.5" />
+              <circle cx={position.x} cy={position.y} r={radius} fill={tone.fill} />
+              <text x={position.x} y={position.y + 2.5} fill="#FFFFFF" textAnchor="middle" fontSize="6.5" fontWeight="700">
+                {step.value}
+              </text>
+            </g>
+          );
+        })}
+
+        {workflowSteps.map((step, stepIndex) => {
+          const tone = WORKFLOW_TONES[step.tone];
+          const weight = step.value / maxWorkflowValue;
+          const duration = Math.max(4.2, 8.2 - weight * 2.6);
+
+          return (
+            <circle key={`${step.label}-packet`} r={2.2 + weight * 1.5} fill={tone.fill}>
+              <animateMotion dur={`${duration}s`} begin={`${stepIndex * 0.55}s`} repeatCount="indefinite" rotate="auto">
+                <mpath href="#workflow-data-route" />
+              </animateMotion>
+              <animate attributeName="opacity" values="0;1;1;0" dur={`${duration}s`} begin={`${stepIndex * 0.55}s`} repeatCount="indefinite" />
+            </circle>
+          );
+        })}
+
+        {workflowSteps.map((step, stepIndex) => {
+          const tone = WORKFLOW_TONES[step.tone];
+          const weight = step.value / maxWorkflowValue;
+          const position = nodePositions[stepIndex] ?? nodePositions[nodePositions.length - 1];
+          const barWidth = 36;
+
+          return (
+            <g key={`${step.label}-metric`}>
+              <text x={position.x} y="117" fill="#161616" textAnchor="middle" fontSize="8" fontWeight="700">
+                {step.label}
+              </text>
+              <text x={position.x} y="127" fill="#525252" textAnchor="middle" fontSize="7">
+                {step.value} {step.unit}
+              </text>
+              <rect x={position.x - barWidth / 2} y="130" width={barWidth} height="3" rx="1.5" fill="rgba(22,22,22,0.08)" />
+              <rect x={position.x - barWidth / 2} y="130" width={Math.max(6, barWidth * weight)} height="3" rx="1.5" fill={tone.fill} />
+            </g>
+          );
+        })}
+      </svg>
     </div>
   );
 }
@@ -580,14 +799,14 @@ function ModuleGrid({ platform, ui }: { platform: Dictionary["platformPage"]; ui
   return (
     <article id="platform-modules" className="surface-card rounded-[2rem] border border-brand-border p-6 md:p-7">
       <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-brand-blue">{platform.eyebrow}</p>
-      <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em] md:text-3xl">{platform.modules.title}</h2>
+      <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em] md:text-3xl">{titleCase(platform.modules.title)}</h2>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-brand-muted md:text-base">{platform.modules.subtitle}</p>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+      <div className="mt-6 grid items-stretch gap-4 sm:grid-cols-2">
         {platform.modules.items.map((item, index) => (
-          <div key={item.title} className="hover-lift surface-soft rounded-[1.6rem] border border-brand-border p-4">
+          <div key={item.title} className="hover-lift surface-soft flex h-full min-h-[18rem] flex-col rounded-[1.6rem] border border-brand-border p-4">
             <ModuleVisual index={index} ui={ui} />
-            <h3 className="mt-4 text-lg font-semibold tracking-tight text-brand-charcoal">{item.title}</h3>
+            <h3 className="mt-4 text-lg font-semibold tracking-tight text-brand-charcoal">{titleCase(item.title)}</h3>
             <p className="mt-2 text-sm leading-6 text-brand-muted">{item.desc}</p>
           </div>
         ))}
@@ -607,7 +826,7 @@ export default function PlatformShowcase({ locale, platform }: PlatformShowcaseP
           <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)]">
             <Reveal className="max-w-4xl">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-brand-blue">{platform.eyebrow}</p>
-              <h1 className="mt-4 text-4xl font-semibold tracking-[-0.04em] md:text-6xl">{platform.title}</h1>
+              <h1 className="mt-4 text-4xl font-semibold tracking-[-0.04em] md:text-6xl">{titleCase(platform.title)}</h1>
               <p className="mt-6 max-w-3xl text-lg leading-8 text-brand-muted md:text-xl">{platform.subtitle}</p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">

@@ -5,6 +5,7 @@ import NeuralNetworkBackground from "@/components/background/NeuralNetworkBackgr
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
+import SiteChat from "@/components/SiteChat";
 
 export const metadata: Metadata = {
   metadataBase: new URL(`https://${site.domain}`),
@@ -36,6 +37,7 @@ export default async function LocaleLayout({
         <Navbar locale={locale} />
         <PageTransition>{children}</PageTransition>
         <Footer locale={locale} />
+        <SiteChat locale={locale} />
       </div>
     </>
   );

@@ -25,8 +25,8 @@ function getAutoReplyCopy(locale: Locale) {
     return {
       subject: "Recibimos tu mensaje | ZQX Digital Consulting",
       greeting: "Gracias por contactar a ZQX Digital Consulting.",
-      body: "Tu mensaje fue recibido correctamente. Enviamos esta confirmacion automatica mientras revisamos el contexto para responder con siguientes pasos claros.",
-      followUp: "El equipo dara seguimiento con alcance, tiempos y ruta recomendada.",
+      body: "Tu mensaje fue recibido correctamente. Enviamos esta confirmación automática mientras revisamos el contexto para responder con siguientes pasos claros.",
+      followUp: "El equipo dará seguimiento con alcance, tiempos y ruta recomendada.",
     };
   }
 

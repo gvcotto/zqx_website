@@ -74,6 +74,13 @@ export const en = {
       "ZQX integrates AI, automation, data, and operational controls into connected workflows that teams can adopt, govern, and scale.",
   },
   aboutVision: {
+    meaning: {
+      title: "ZQX = Zero-to-Execution Excellence",
+      paragraphs: [
+        "Zero-to-Execution means taking ideas, strategy, or operational chaos and turning them into working systems.",
+        "Excellence reflects precision, quality, and premium delivery across decisions, workflows, controls, and handoff.",
+      ],
+    },
     about: {
       title: "About",
       paragraphs: [
@@ -289,6 +296,21 @@ export const en = {
     title: "About",
     subtitle:
       "ZQX Digital Consulting operates as an executive delivery partner for organizations that need modern technology work to become clearer, faster, and more connected.",
+    meaning: {
+      label: "What ZQX means",
+      title: "Zero-to-Execution Excellence",
+      intro: "ZQX stands for taking ideas, strategy, or operational chaos and turning them into working systems with precision, quality, and premium delivery.",
+      points: [
+        {
+          term: "Zero-to-Execution",
+          desc: "Moving from ambiguity, early ideas, or fragmented strategy into systems that operate in the real business.",
+        },
+        {
+          term: "Excellence",
+          desc: "Precision, quality, and premium delivery across the decisions, workflows, controls, and handoff.",
+        },
+      ],
+    },
     pillars: [
       {
         title: "Clarity",

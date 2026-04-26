@@ -8,6 +8,7 @@ import HomeMission from "@/components/sections/HomeMission";
 import StrategicInnovation from "@/components/sections/StrategicInnovation";
 import { isLocale, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
+import { titleCase } from "@/lib/text";
 
 export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
@@ -15,6 +16,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   const t = getDictionary(locale);
 
   const aboutCards = [
+    { title: t.aboutVision.meaning.title, paragraphs: t.aboutVision.meaning.paragraphs },
     { title: t.aboutVision.about.title, paragraphs: t.aboutVision.about.paragraphs },
     { title: t.aboutVision.vision.title, paragraphs: t.aboutVision.vision.paragraphs },
     { title: t.aboutVision.team.title, paragraphs: t.aboutVision.team.paragraphs },
@@ -35,11 +37,11 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
       </Section>
 
       <Section title={t.sections.aboutVisionTitle}>
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-4">
           {aboutCards.map((card, index) => (
-            <Reveal key={card.title} delay={index * 60}>
-              <article className="surface-card rounded-3xl border border-brand-border p-7 md:p-8">
-                <h3 className="text-xl font-semibold tracking-tight">{card.title}</h3>
+            <Reveal key={card.title} delay={index * 60} className="h-full">
+              <article className="surface-card h-full min-h-[18rem] rounded-3xl border border-brand-border p-7 md:p-8">
+                <h3 className="text-xl font-semibold tracking-tight">{titleCase(card.title)}</h3>
                 <div className="mt-4 space-y-3 text-base leading-7 text-brand-muted">
                   {card.paragraphs.map((paragraph) => (
                     <p key={paragraph}>{paragraph}</p>

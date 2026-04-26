@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
+import { titleCase } from "@/lib/text";
 
 export default function ContactForm({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
@@ -44,7 +45,7 @@ export default function ContactForm({ locale }: { locale: Locale }) {
 
   return (
     <form onSubmit={onSubmit} className="surface-card rounded-3xl border border-brand-border p-6 md:p-8">
-      <div className="text-xl font-semibold tracking-tight">{t.contact.formTitle}</div>
+      <div className="text-xl font-semibold tracking-tight">{titleCase(t.contact.formTitle)}</div>
       <div className="mt-2 text-sm text-brand-muted">
         {t.contact.autoReply}. {t.contact.autoReplyDetail}
       </div>
