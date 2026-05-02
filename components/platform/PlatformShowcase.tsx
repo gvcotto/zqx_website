@@ -4,6 +4,7 @@ import Link from "next/link";
 import { startTransition, useEffect, useMemo, useState } from "react";
 import type { Dictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
+import { site } from "@/lib/site";
 import { titleCase } from "@/lib/text";
 import Reveal from "@/components/Reveal";
 
@@ -830,6 +831,9 @@ export default function PlatformShowcase({ locale, platform }: PlatformShowcaseP
               <p className="mt-6 max-w-3xl text-lg leading-8 text-brand-muted md:text-xl">{platform.subtitle}</p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <a href={site.platformSystemUrl} target="_blank" rel="noreferrer" className="focus-ring pressable inline-flex rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-brand-white hover:bg-[#0043ce]">
+                  See our demo
+                </a>
                 <Link href={`/${locale}/contact`} className="focus-ring pressable inline-flex rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-brand-white hover:bg-[#0043ce]">
                   {platform.ctaPrimary}
                 </Link>
