@@ -22,21 +22,11 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
 
           <Reveal delay={60} className="mt-10">
             <article className="surface-card overflow-hidden rounded-3xl border border-brand-border p-6 md:p-8">
-              <div className="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-brand-blue">{t.aboutPage.meaning.label}</p>
-                  <h2 className="mt-4 text-2xl font-semibold tracking-[-0.03em] md:text-4xl">ZQX = {t.aboutPage.meaning.title}</h2>
-                  <p className="mt-4 text-base leading-7 text-brand-muted md:text-lg">{t.aboutPage.meaning.intro}</p>
-                </div>
-
-                <div className="grid gap-3">
-                  {t.aboutPage.meaning.points.map((point) => (
-                    <div key={point.term} className="surface-soft rounded-[1.4rem] border border-brand-border px-5 py-4">
-                      <h3 className="text-base font-semibold tracking-tight text-brand-charcoal">{point.term}</h3>
-                      <p className="mt-2 text-sm leading-6 text-brand-muted">{point.desc}</p>
-                    </div>
-                  ))}
-                </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-brand-blue">{t.aboutPage.meaning.label}</p>
+                <p className="mt-4 text-xl font-semibold leading-8 tracking-[-0.02em] text-brand-charcoal md:text-3xl md:leading-[1.25]">
+                  {`ZQX = ${t.aboutPage.meaning.title}: ${t.aboutPage.meaning.intro}`}
+                </p>
               </div>
             </article>
           </Reveal>
