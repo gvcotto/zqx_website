@@ -94,8 +94,8 @@ export default function SiteChat({ locale }: { locale: Locale }) {
         >
           <header className="flex items-center justify-between gap-3 border-b border-brand-border bg-white/70 px-4 py-3 backdrop-blur-xl">
             <div className="flex min-w-0 items-center gap-3">
-              <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-xl border border-brand-border bg-white p-1">
-                <Image src="/images/ZQX_mark.svg" alt="ZQX logo" width={32} height={32} className="h-full w-full object-contain" />
+              <div className="grid h-10 w-16 shrink-0 place-items-center overflow-hidden rounded-md border border-brand-border bg-white px-1">
+                <Image src="/images/ZQX_logo.png" alt="ZQX logo" width={64} height={24} className="h-full w-full object-contain" />
               </div>
               <div className="min-w-0">
                 <div id="zqx-chat-title" className="truncate text-sm font-semibold text-brand-charcoal">
