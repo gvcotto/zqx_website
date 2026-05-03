@@ -48,19 +48,18 @@ export default function Navbar({ locale }: { locale: Locale }) {
     >
       <div className="container flex h-24 items-center justify-between gap-6">
         <div className="inline-flex items-center gap-3">
-          <Link href={`/${locale}/ai-game`} className="focus-ring pressable inline-flex rounded-md px-1 py-0.5" aria-label="Open ZQX AI game">
-          <Image
-            src="/images/ZQX_logo.svg"
-            alt="ZQX Digital Consulting"
-            width={184}
-            height={92}
-            className="h-9 w-auto sm:h-11"
-            priority
-          />
+          <Link href={`/${locale}`} className="focus-ring pressable inline-flex items-center gap-2 rounded-md px-1 py-0.5" aria-label="Go to home">
+            <Image
+              src="/images/ZQX_mark.svg"
+              alt="ZQX"
+              width={88}
+              height={64}
+              className="h-8 w-auto sm:h-10"
+              priority
+            />
+            <span className="text-base font-semibold tracking-tight sm:hidden">ZQX</span>
+            <span className="hidden text-xl font-semibold tracking-tight sm:inline">ZQX Digital Consulting</span>
           </Link>
-          <Link href={`/${locale}`} className="focus-ring pressable inline-flex max-w-[10.5rem] rounded-md px-1 py-0.5 font-semibold tracking-tight sm:max-w-none sm:text-xl">
-            <span className="block truncate text-sm sm:text-xl">ZQX Digital Consulting</span>
-        </Link>
         </div>
 
         <div className="hidden items-center gap-5 md:flex">
