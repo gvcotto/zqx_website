@@ -58,8 +58,8 @@ export default function Navbar({ locale }: { locale: Locale }) {
             priority
           />
           </Link>
-          <Link href={`/${locale}`} className="focus-ring pressable hidden rounded-md px-1 py-0.5 text-lg font-semibold tracking-tight sm:inline sm:text-xl">
-          <span className="hidden sm:inline text-lg sm:text-xl">ZQX Digital Consulting</span>
+          <Link href={`/${locale}`} className="focus-ring pressable inline-flex max-w-[10.5rem] rounded-md px-1 py-0.5 font-semibold tracking-tight sm:max-w-none sm:text-xl">
+            <span className="block truncate text-sm sm:text-xl">ZQX Digital Consulting</span>
         </Link>
         </div>
 
