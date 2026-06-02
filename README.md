@@ -28,3 +28,13 @@ If `OPENAI_API_KEY` is missing or the AI request fails, the chat falls back to l
 
 ## Deploy
 Push to GitHub and import into Vercel.
+
+## Change log
+
+### 2026-06-02
+
+- Restored the header branding to use `public/zqx.svg`, matching the platform demo logo.
+- Fixed navigation so the logo opens the AI game while the text label returns to the home page.
+- Kept the mobile header compact: only `ZQX` plus the game shortcut.
+- Kept the desktop header full: `ZQX Digital Consulting` plus the game shortcut.
+- Updated the platform demo CTA so it points to the system login flow instead of a broken path.

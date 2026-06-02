@@ -819,6 +819,7 @@ function ModuleGrid({ platform, ui }: { platform: Dictionary["platformPage"]; ui
 export default function PlatformShowcase({ locale, platform }: PlatformShowcaseProps) {
   const [activeTab, setActiveTab] = useState<PreviewTab>("dashboards");
   const ui = getPlatformUi(locale);
+  const demoHref = new URL("/login", site.platformSystemUrl).toString();
 
   return (
     <>
@@ -831,7 +832,7 @@ export default function PlatformShowcase({ locale, platform }: PlatformShowcaseP
               <p className="mt-6 max-w-3xl text-lg leading-8 text-brand-muted md:text-xl">{platform.subtitle}</p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a href={site.platformSystemUrl} target="_blank" rel="noreferrer" className="focus-ring pressable inline-flex rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-brand-white hover:bg-[#0043ce]">
+                <a href={demoHref} target="_blank" rel="noreferrer" className="focus-ring pressable inline-flex rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-brand-white hover:bg-[#0043ce]">
                   See our demo
                 </a>
                 <Link href={`/${locale}/contact`} className="focus-ring pressable inline-flex rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-brand-white hover:bg-[#0043ce]">
