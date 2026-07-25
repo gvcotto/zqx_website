@@ -31,6 +31,14 @@ Push to GitHub and import into Vercel.
 
 ## Change log
 
+### 2026-07-25
+
+- Added the `PlatformArchitecture` section to `/platform` to explain ZQX governance, client companies, users, operations, APIs, Supabase, Google OAuth, Vercel, and Postgres/RLS.
+- Added inline architecture icons in the platform architecture component.
+- Added the `architecture-dot` animation to `app/globals.css`.
+- Validated production build from a clean non-OneDrive copy because local OneDrive builds hit webpack read errors.
+- Noted pending maintenance: Next.js/security upgrade and npm audit review.
+
 ### 2026-06-02
 
 - Restored the header branding to use `public/zqx.svg`, matching the platform demo logo.
