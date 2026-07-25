@@ -50,6 +50,15 @@ a {
   }
 }
 
+@keyframes architecture-dot {
+  from {
+    left: 8%;
+  }
+  to {
+    left: calc(92% - 0.75rem);
+  }
+}
+
 .page-transition-enter {
   animation: page-enter 160ms ease-out both;
 }
