@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Reveal from "@/components/Reveal";
 import type { Locale } from "@/lib/i18n";
 
@@ -8,6 +9,7 @@ type PlatformArchitectureProps = {
 type Node = {
   id: string;
   icon: string;
+  iconAlt: string;
   title: string;
   desc: string;
   tone: string;
@@ -73,7 +75,9 @@ function Dot({ pathId, color, delay = "0s" }: { pathId: string; color: string; d
 function NodeCard({ node }: { node: Node }) {
   return (
     <article className={`absolute z-10 flex min-h-20 w-48 items-center gap-3 rounded-lg border border-brand-border bg-white p-3 shadow-[0_16px_34px_rgba(15,23,42,0.10)] ${node.className}`}>
-      <div className={`grid h-11 w-11 shrink-0 place-items-center rounded-lg border text-xs font-black ${toneClass[node.tone]}`}>{node.icon}</div>
+      <div className={`grid h-11 w-11 shrink-0 place-items-center rounded-lg border ${toneClass[node.tone]}`}>
+        <Image src={node.icon} alt={node.iconAlt} width={24} height={24} className="h-6 w-6 object-contain" />
+      </div>
       <div>
         <h3 className="text-sm font-black leading-tight text-brand-charcoal">{node.title}</h3>
         <p className="mt-1 text-xs font-semibold leading-5 text-brand-muted">{node.desc}</p>
@@ -94,12 +98,12 @@ function Lanes() {
 
 function ZqxMap() {
   const nodes: Node[] = [
-    { id: "owner", icon: "SU", title: "Superusuario", desc: "Owner ZQX", tone: "blue", className: "left-[5%] top-[13%]" },
-    { id: "admins", icon: "ZA", title: "Admins ZQX", desc: "Asignan empresas", tone: "slate", className: "left-[38%] top-[42%]" },
-    { id: "google", icon: "G", title: "Google OAuth", desc: "Identidad", tone: "green", className: "left-[70%] top-[13%]" },
-    { id: "next", icon: "NX", title: "Next.js + Vercel", desc: "Dashboard y APIs", tone: "blue", className: "left-[70%] top-[42%]" },
-    { id: "biz", icon: "CO", title: "Empresas", desc: "Workspaces", tone: "green", className: "left-[64%] top-[70%]" },
-    { id: "db", icon: "DB", title: "Postgres", desc: "RLS", tone: "cyan", className: "left-[84%] top-[70%] w-36" },
+    { id: "owner", icon: "/images/architecture/user-cog.svg", iconAlt: "Superusuario", title: "Superusuario", desc: "Owner ZQX", tone: "blue", className: "left-[5%] top-[13%]" },
+    { id: "admins", icon: "/images/architecture/users.svg", iconAlt: "Admins ZQX", title: "Admins ZQX", desc: "Asignan empresas", tone: "slate", className: "left-[38%] top-[42%]" },
+    { id: "google", icon: "/images/architecture/google.svg", iconAlt: "Google OAuth", title: "Google OAuth", desc: "Identidad", tone: "green", className: "left-[70%] top-[13%]" },
+    { id: "next", icon: "/images/architecture/nextdotjs.svg", iconAlt: "Next.js", title: "Next.js + Vercel", desc: "Dashboard y APIs", tone: "blue", className: "left-[70%] top-[42%]" },
+    { id: "biz", icon: "/images/architecture/building-2.svg", iconAlt: "Empresas", title: "Empresas", desc: "Workspaces", tone: "green", className: "left-[64%] top-[70%]" },
+    { id: "db", icon: "/images/architecture/postgresql.svg", iconAlt: "Postgres", title: "Postgres", desc: "RLS", tone: "cyan", className: "left-[84%] top-[70%] w-36" },
   ];
 
   return (
@@ -127,13 +131,13 @@ function ZqxMap() {
 
 function CompanyMap() {
   const nodes: Node[] = [
-    { id: "login", icon: "IN", title: "Login", desc: "Google o email", tone: "green", className: "left-[5%] top-[12%]" },
-    { id: "users", icon: "US", title: "Usuarios", desc: "Roles por empresa", tone: "slate", className: "left-[30%] top-[12%]" },
-    { id: "clients", icon: "CL", title: "Clientes", desc: "Leads y cuentas", tone: "green", className: "left-[49%] top-[42%]" },
-    { id: "calendar", icon: "AG", title: "Agenda", desc: "Citas y reuniones", tone: "blue", className: "left-[73%] top-[12%]" },
-    { id: "billing", icon: "BI", title: "Cobros", desc: "Pagos y saldos", tone: "amber", className: "left-[73%] top-[42%]" },
-    { id: "api", icon: "API", title: "APIs", desc: "Routes", tone: "cyan", className: "left-[49%] top-[71%] w-36" },
-    { id: "assistant", icon: "AI", title: "Asistente", desc: "FAQ / intake", tone: "blue", className: "left-[73%] top-[71%]" },
+    { id: "login", icon: "/images/architecture/log-in.svg", iconAlt: "Login", title: "Login", desc: "Google o email", tone: "green", className: "left-[5%] top-[12%]" },
+    { id: "users", icon: "/images/architecture/users.svg", iconAlt: "Usuarios", title: "Usuarios", desc: "Roles por empresa", tone: "slate", className: "left-[30%] top-[12%]" },
+    { id: "clients", icon: "/images/architecture/building-2.svg", iconAlt: "Clientes", title: "Clientes", desc: "Leads y cuentas", tone: "green", className: "left-[49%] top-[42%]" },
+    { id: "calendar", icon: "/images/architecture/calendar-days.svg", iconAlt: "Agenda", title: "Agenda", desc: "Citas y reuniones", tone: "blue", className: "left-[73%] top-[12%]" },
+    { id: "billing", icon: "/images/architecture/credit-card.svg", iconAlt: "Cobros", title: "Cobros", desc: "Pagos y saldos", tone: "amber", className: "left-[73%] top-[42%]" },
+    { id: "api", icon: "/images/architecture/route.svg", iconAlt: "APIs", title: "APIs", desc: "Routes", tone: "cyan", className: "left-[49%] top-[71%] w-36" },
+    { id: "assistant", icon: "/images/architecture/bot.svg", iconAlt: "Asistente", title: "Asistente", desc: "FAQ / intake", tone: "blue", className: "left-[73%] top-[71%]" },
   ];
 
   return (
@@ -166,7 +170,9 @@ function MobileList({ nodes }: { nodes: Node[] }) {
     <div className="grid gap-3 md:hidden">
       {nodes.map((node) => (
         <div key={node.id} className="flex items-center gap-3 rounded-lg border border-brand-border bg-white p-3">
-          <div className={`grid h-11 w-11 shrink-0 place-items-center rounded-lg border text-xs font-black ${toneClass[node.tone]}`}>{node.icon}</div>
+          <div className={`grid h-11 w-11 shrink-0 place-items-center rounded-lg border ${toneClass[node.tone]}`}>
+            <Image src={node.icon} alt={node.iconAlt} width={24} height={24} className="h-6 w-6 object-contain" />
+          </div>
           <div>
             <h3 className="text-sm font-black">{node.title}</h3>
             <p className="text-xs font-semibold leading-5 text-brand-muted">{node.desc}</p>
@@ -180,16 +186,16 @@ function MobileList({ nodes }: { nodes: Node[] }) {
 export default function PlatformArchitecture({ locale }: PlatformArchitectureProps) {
   const t = copy[locale];
   const zqxMobile = [
-    { id: "owner", icon: "SU", title: locale === "es" ? "Superusuario" : "Super user", desc: "Owner ZQX", tone: "blue", className: "" },
-    { id: "admins", icon: "ZA", title: "Admins ZQX", desc: locale === "es" ? "Asignan empresas" : "Assign companies", tone: "slate", className: "" },
-    { id: "biz", icon: "CO", title: locale === "es" ? "Empresas" : "Companies", desc: "Workspaces", tone: "green", className: "" },
-    { id: "db", icon: "DB", title: "Postgres", desc: "RLS", tone: "cyan", className: "" },
+    { id: "owner", icon: "/images/architecture/user-cog.svg", iconAlt: "Superusuario", title: locale === "es" ? "Superusuario" : "Super user", desc: "Owner ZQX", tone: "blue", className: "" },
+    { id: "admins", icon: "/images/architecture/users.svg", iconAlt: "Admins ZQX", title: "Admins ZQX", desc: locale === "es" ? "Asignan empresas" : "Assign companies", tone: "slate", className: "" },
+    { id: "biz", icon: "/images/architecture/building-2.svg", iconAlt: "Empresas", title: locale === "es" ? "Empresas" : "Companies", desc: "Workspaces", tone: "green", className: "" },
+    { id: "db", icon: "/images/architecture/postgresql.svg", iconAlt: "Postgres", title: "Postgres", desc: "RLS", tone: "cyan", className: "" },
   ];
   const companyMobile = [
-    { id: "login", icon: "IN", title: "Login", desc: locale === "es" ? "Google o email" : "Google or email", tone: "green", className: "" },
-    { id: "clients", icon: "CL", title: locale === "es" ? "Clientes" : "Clients", desc: locale === "es" ? "Leads y cuentas" : "Leads and accounts", tone: "green", className: "" },
-    { id: "billing", icon: "BI", title: locale === "es" ? "Cobros" : "Billing", desc: locale === "es" ? "Pagos y saldos" : "Payments", tone: "amber", className: "" },
-    { id: "assistant", icon: "AI", title: locale === "es" ? "Asistente" : "Assistant", desc: "FAQ / intake", tone: "blue", className: "" },
+    { id: "login", icon: "/images/architecture/log-in.svg", iconAlt: "Login", title: "Login", desc: locale === "es" ? "Google o email" : "Google or email", tone: "green", className: "" },
+    { id: "clients", icon: "/images/architecture/building-2.svg", iconAlt: "Clientes", title: locale === "es" ? "Clientes" : "Clients", desc: locale === "es" ? "Leads y cuentas" : "Leads and accounts", tone: "green", className: "" },
+    { id: "billing", icon: "/images/architecture/credit-card.svg", iconAlt: "Cobros", title: locale === "es" ? "Cobros" : "Billing", desc: locale === "es" ? "Pagos y saldos" : "Payments", tone: "amber", className: "" },
+    { id: "assistant", icon: "/images/architecture/bot.svg", iconAlt: "Asistente", title: locale === "es" ? "Asistente" : "Assistant", desc: "FAQ / intake", tone: "blue", className: "" },
   ];
 
   return (
