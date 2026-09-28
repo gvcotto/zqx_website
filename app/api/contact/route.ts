@@ -1,13 +1,15 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { isLocale, type Locale } from "@/lib/i18n";
+import { z } from "zod";
+import { publicValidationError, readPublicJson } from "@/lib/api-request";
 
-type ContactPayload = {
-  name?: string;
-  email?: string;
-  message?: string;
-  locale?: string;
-};
+const contactPayloadSchema = z.object({
+  name: z.string().trim().min(1).max(120),
+  email: z.string().trim().email().max(320),
+  message: z.string().trim().min(1).max(5000),
+  locale: z.string().max(5).optional(),
+}).strict();
 
 const CONTACT_INBOX = process.env.CONTACT_INBOX ?? "info@zqxconsulting.com";
 
@@ -38,10 +40,6 @@ function getAutoReplyCopy(locale: Locale) {
   };
 }
 
-function isValidEmail(value: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-}
-
 export async function POST(req: Request) {
   const apiKey = process.env.RESEND_API_KEY;
 
@@ -49,26 +47,17 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Email service is not configured." }, { status: 500 });
   }
 
-  let body: ContactPayload;
-
+  let body: z.infer<typeof contactPayloadSchema>;
   try {
-    body = (await req.json()) as ContactPayload;
-  } catch {
-    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+    body = contactPayloadSchema.parse(await readPublicJson(req));
+  } catch (error) {
+    return publicValidationError(error) ?? NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
   const name = body.name?.trim() ?? "";
   const email = body.email?.trim() ?? "";
   const message = body.message?.trim() ?? "";
   const locale = body.locale && isLocale(body.locale) ? body.locale : ("en" as Locale);
-
-  if (!name || !email || !message) {
-    return NextResponse.json({ error: "All fields are required." }, { status: 400 });
-  }
-
-  if (!isValidEmail(email)) {
-    return NextResponse.json({ error: "Invalid email address." }, { status: 400 });
-  }
 
   const resend = new Resend(apiKey);
   const fromEmail = process.env.RESEND_FROM_EMAIL ?? "ZQX Digital Consulting <onboarding@resend.dev>";

@@ -19,8 +19,8 @@ type Node = {
 const copy = {
   es: {
     eyebrow: "Arquitectura operativa",
-    title: "Como se conecta ZQX con cada empresa cliente.",
-    body: "La plataforma separa gobierno ZQX, administracion de empresas y operacion diaria para que todos entiendan que ven, que administran y donde viven los datos.",
+    title: "Arquitectura actual y controles objetivo.",
+    body: "La experiencia actual separa gobierno ZQX, empresas y operacion diaria. La persistencia PostgreSQL/RLS y las asignaciones limitadas de administradores se muestran como arquitectura objetivo hasta completar su validacion de produccion.",
     zqxTitle: "ZQX administra empresas cliente",
     companyTitle: "Cada empresa opera sus clientes",
     zqxFlow: "Superusuario -> Admins ZQX -> Empresas -> Datos",
@@ -28,8 +28,8 @@ const copy = {
   },
   en: {
     eyebrow: "Operating architecture",
-    title: "How ZQX connects with every client company.",
-    body: "The platform separates ZQX governance, company administration, and daily operations so every stakeholder understands what they see, manage, and where data belongs.",
+    title: "Current architecture and target controls.",
+    body: "The current experience separates ZQX governance, companies, and daily operations. PostgreSQL/RLS persistence and scoped administrator assignments are shown as target architecture until production validation is complete.",
     zqxTitle: "ZQX manages client companies",
     companyTitle: "Each company runs its clients",
     zqxFlow: "Super user -> ZQX admins -> Companies -> Data",
@@ -99,11 +99,11 @@ function Lanes() {
 function ZqxMap() {
   const nodes: Node[] = [
     { id: "owner", icon: "/images/architecture/user-cog.svg", iconAlt: "Superusuario", title: "Superusuario", desc: "Owner ZQX", tone: "blue", className: "left-[5%] top-[13%]" },
-    { id: "admins", icon: "/images/architecture/users.svg", iconAlt: "Admins ZQX", title: "Admins ZQX", desc: "Asignan empresas", tone: "slate", className: "left-[38%] top-[42%]" },
+    { id: "admins", icon: "/images/architecture/users.svg", iconAlt: "Admins ZQX", title: "Admins ZQX", desc: "Objetivo: asignaciones", tone: "slate", className: "left-[38%] top-[42%]" },
     { id: "google", icon: "/images/architecture/google.svg", iconAlt: "Google OAuth", title: "Google OAuth", desc: "Identidad", tone: "green", className: "left-[70%] top-[13%]" },
     { id: "next", icon: "/images/architecture/nextdotjs.svg", iconAlt: "Next.js", title: "Next.js + Vercel", desc: "Dashboard y APIs", tone: "blue", className: "left-[70%] top-[42%]" },
     { id: "biz", icon: "/images/architecture/building-2.svg", iconAlt: "Empresas", title: "Empresas", desc: "Workspaces", tone: "green", className: "left-[64%] top-[70%]" },
-    { id: "db", icon: "/images/architecture/postgresql.svg", iconAlt: "Postgres", title: "Postgres", desc: "RLS", tone: "cyan", className: "left-[84%] top-[70%] w-36" },
+    { id: "db", icon: "/images/architecture/postgresql.svg", iconAlt: "Postgres", title: "Postgres", desc: "Objetivo: RLS", tone: "cyan", className: "left-[84%] top-[70%] w-36" },
   ];
 
   return (
@@ -187,9 +187,9 @@ export default function PlatformArchitecture({ locale }: PlatformArchitecturePro
   const t = copy[locale];
   const zqxMobile = [
     { id: "owner", icon: "/images/architecture/user-cog.svg", iconAlt: "Superusuario", title: locale === "es" ? "Superusuario" : "Super user", desc: "Owner ZQX", tone: "blue", className: "" },
-    { id: "admins", icon: "/images/architecture/users.svg", iconAlt: "Admins ZQX", title: "Admins ZQX", desc: locale === "es" ? "Asignan empresas" : "Assign companies", tone: "slate", className: "" },
+    { id: "admins", icon: "/images/architecture/users.svg", iconAlt: "Admins ZQX", title: "Admins ZQX", desc: locale === "es" ? "Objetivo: asignaciones" : "Target: assignments", tone: "slate", className: "" },
     { id: "biz", icon: "/images/architecture/building-2.svg", iconAlt: "Empresas", title: locale === "es" ? "Empresas" : "Companies", desc: "Workspaces", tone: "green", className: "" },
-    { id: "db", icon: "/images/architecture/postgresql.svg", iconAlt: "Postgres", title: "Postgres", desc: "RLS", tone: "cyan", className: "" },
+    { id: "db", icon: "/images/architecture/postgresql.svg", iconAlt: "Postgres", title: "Postgres", desc: locale === "es" ? "Objetivo: RLS" : "Target: RLS", tone: "cyan", className: "" },
   ];
   const companyMobile = [
     { id: "login", icon: "/images/architecture/log-in.svg", iconAlt: "Login", title: "Login", desc: locale === "es" ? "Google o email" : "Google or email", tone: "green", className: "" },

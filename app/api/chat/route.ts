@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import { buildLocalAnswer, buildSiteContext, detectChatLocale, type ChatHistoryItem } from "@/lib/chat";
 import { isLocale, type Locale } from "@/lib/i18n";
+import { z } from "zod";
+import { publicValidationError, readPublicJson } from "@/lib/api-request";
 
-type ChatPayload = {
-  message?: string;
-  locale?: string;
-  history?: ChatHistoryItem[];
-};
+const chatPayloadSchema = z.object({
+  message: z.string().trim().min(1).max(1200),
+  locale: z.string().max(5).optional(),
+  history: z.array(z.object({ role: z.enum(["assistant", "user"]), text: z.string().max(900) }).strict()).max(6).optional(),
+}).strict();
 
 type OpenAIResponse = {
   output_text?: string;
@@ -109,22 +111,17 @@ async function generateOpenAIAnswer(message: string, locale: Locale, history: Ch
 }
 
 export async function POST(req: Request) {
-  let body: ChatPayload;
-
+  let body: z.infer<typeof chatPayloadSchema>;
   try {
-    body = (await req.json()) as ChatPayload;
-  } catch {
-    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+    body = chatPayloadSchema.parse(await readPublicJson(req));
+  } catch (error) {
+    return publicValidationError(error) ?? NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
   const rawMessage = body.message?.trim() ?? "";
   const fallbackLocale = body.locale && isLocale(body.locale) ? body.locale : ("en" as Locale);
   const locale = detectChatLocale(rawMessage, fallbackLocale);
   const history = cleanHistory(body.history);
-
-  if (!rawMessage) {
-    return NextResponse.json({ error: "Message is required." }, { status: 400 });
-  }
 
   const message = rawMessage.slice(0, 1200);
   const localAnswer = buildLocalAnswer(message, locale);
