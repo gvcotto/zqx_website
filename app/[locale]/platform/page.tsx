@@ -12,6 +12,11 @@ export default async function PlatformPage({ params }: { params: Promise<{ local
 
   return (
     <main>
+      <div className="container pt-8 text-sm text-brand-muted">
+        {locale === "es"
+          ? "Demostración visual con datos ilustrativos. Predicciones, automatizaciones y flujos enterprise se muestran como conceptos; su entrega requiere alcance y validación específicos."
+          : "Visual demonstration with illustrative data. Forecasting, automation, and enterprise workflows are concepts; delivery requires a defined scope and specific validation."}
+      </div>
       <PlatformShowcase locale={locale} platform={t.platformPage} />
       <PlatformArchitecture locale={locale} />
 

@@ -14,6 +14,7 @@ const contentSecurityPolicy = [
 ].join("; ");
 
 const nextConfig: NextConfig = {
+  output: process.env.ZQX_OUTPUT === "standalone" ? "standalone" : undefined,
   reactStrictMode: true,
   async headers() {
     return [{
