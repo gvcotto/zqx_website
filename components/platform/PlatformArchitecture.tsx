@@ -18,21 +18,21 @@ type Node = {
 
 const copy = {
   es: {
-    eyebrow: "Arquitectura operativa",
-    title: "Como se conecta ZQX con cada empresa cliente.",
-    body: "La plataforma separa gobierno ZQX, administracion de empresas y operacion diaria para que todos entiendan que ven, que administran y donde viven los datos.",
-    zqxTitle: "ZQX administra empresas cliente",
-    companyTitle: "Cada empresa opera sus clientes",
-    zqxFlow: "Superusuario -> Admins ZQX -> Empresas -> Datos",
+    eyebrow: "ZQX Core y perfiles de despliegue",
+    title: "El producto es ZQX. La infraestructura se elige por despliegue.",
+    body: "ZQX Core organiza empresas, clientes, agenda, tareas, facturas y pagos. El perfil actual integra Next.js, identidad verificada y PostgreSQL con membresías, roles y aislamiento tenant validados en pruebas controladas con datos ficticios. Los perfiles en otra nube o infraestructura privada están diseñados y requieren validación específica antes de ofrecerse como soportados.",
+    zqxTitle: "Gobierno multiempresa diseñado",
+    companyTitle: "Experiencia operativa de demostración",
+    zqxFlow: "Gobierno ZQX -> Asignación explícita -> Empresas -> Datos aislados",
     companyFlow: "Login -> Usuarios -> Clientes -> Operacion -> APIs",
   },
   en: {
-    eyebrow: "Operating architecture",
-    title: "How ZQX connects with every client company.",
-    body: "The platform separates ZQX governance, company administration, and daily operations so every stakeholder understands what they see, manage, and where data belongs.",
-    zqxTitle: "ZQX manages client companies",
-    companyTitle: "Each company runs its clients",
-    zqxFlow: "Super user -> ZQX admins -> Companies -> Data",
+    eyebrow: "ZQX Core and deployment profiles",
+    title: "ZQX is the product. Infrastructure is a deployment choice.",
+    body: "ZQX Core organizes companies, customers, scheduling, tasks, invoices, and payments. The current profile integrates Next.js, verified identity, and PostgreSQL with memberships, roles, and tenant isolation validated in controlled tests using fictional data. Other-cloud and private-infrastructure profiles are designed and require deployment-specific validation before being offered as supported.",
+    zqxTitle: "Designed multi-company governance",
+    companyTitle: "Demonstration operational experience",
+    zqxFlow: "ZQX governance -> Explicit assignment -> Companies -> Isolated data",
     companyFlow: "Login -> Users -> Clients -> Operations -> APIs",
   },
 } as const;
@@ -99,11 +99,11 @@ function Lanes() {
 function ZqxMap() {
   const nodes: Node[] = [
     { id: "owner", icon: "/images/architecture/user-cog.svg", iconAlt: "Superusuario", title: "Superusuario", desc: "Owner ZQX", tone: "blue", className: "left-[5%] top-[13%]" },
-    { id: "admins", icon: "/images/architecture/users.svg", iconAlt: "Admins ZQX", title: "Admins ZQX", desc: "Asignan empresas", tone: "slate", className: "left-[38%] top-[42%]" },
+    { id: "admins", icon: "/images/architecture/users.svg", iconAlt: "Admins ZQX", title: "Admins ZQX", desc: "Objetivo: asignaciones", tone: "slate", className: "left-[38%] top-[42%]" },
     { id: "google", icon: "/images/architecture/google.svg", iconAlt: "Google OAuth", title: "Google OAuth", desc: "Identidad", tone: "green", className: "left-[70%] top-[13%]" },
-    { id: "next", icon: "/images/architecture/nextdotjs.svg", iconAlt: "Next.js", title: "Next.js + Vercel", desc: "Dashboard y APIs", tone: "blue", className: "left-[70%] top-[42%]" },
+    { id: "next", icon: "/images/architecture/nextdotjs.svg", iconAlt: "Next.js", title: "ZQX UI + APIs", desc: "Next.js runtime", tone: "blue", className: "left-[70%] top-[42%]" },
     { id: "biz", icon: "/images/architecture/building-2.svg", iconAlt: "Empresas", title: "Empresas", desc: "Workspaces", tone: "green", className: "left-[64%] top-[70%]" },
-    { id: "db", icon: "/images/architecture/postgresql.svg", iconAlt: "Postgres", title: "Postgres", desc: "RLS", tone: "cyan", className: "left-[84%] top-[70%] w-36" },
+    { id: "db", icon: "/images/architecture/postgresql.svg", iconAlt: "Postgres", title: "Postgres", desc: "Objetivo: RLS", tone: "cyan", className: "left-[84%] top-[70%] w-36" },
   ];
 
   return (
@@ -187,9 +187,9 @@ export default function PlatformArchitecture({ locale }: PlatformArchitecturePro
   const t = copy[locale];
   const zqxMobile = [
     { id: "owner", icon: "/images/architecture/user-cog.svg", iconAlt: "Superusuario", title: locale === "es" ? "Superusuario" : "Super user", desc: "Owner ZQX", tone: "blue", className: "" },
-    { id: "admins", icon: "/images/architecture/users.svg", iconAlt: "Admins ZQX", title: "Admins ZQX", desc: locale === "es" ? "Asignan empresas" : "Assign companies", tone: "slate", className: "" },
+    { id: "admins", icon: "/images/architecture/users.svg", iconAlt: "Admins ZQX", title: "Admins ZQX", desc: locale === "es" ? "Objetivo: asignaciones" : "Target: assignments", tone: "slate", className: "" },
     { id: "biz", icon: "/images/architecture/building-2.svg", iconAlt: "Empresas", title: locale === "es" ? "Empresas" : "Companies", desc: "Workspaces", tone: "green", className: "" },
-    { id: "db", icon: "/images/architecture/postgresql.svg", iconAlt: "Postgres", title: "Postgres", desc: "RLS", tone: "cyan", className: "" },
+    { id: "db", icon: "/images/architecture/postgresql.svg", iconAlt: "Postgres", title: "Postgres", desc: locale === "es" ? "Objetivo: RLS" : "Target: RLS", tone: "cyan", className: "" },
   ];
   const companyMobile = [
     { id: "login", icon: "/images/architecture/log-in.svg", iconAlt: "Login", title: "Login", desc: locale === "es" ? "Google o email" : "Google or email", tone: "green", className: "" },
@@ -206,6 +206,11 @@ export default function PlatformArchitecture({ locale }: PlatformArchitecturePro
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-brand-blue">{t.eyebrow}</p>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl">{t.title}</h2>
             <p className="mt-5 text-base leading-8 text-brand-muted md:text-lg">{t.body}</p>
+            <p className="mt-4 text-sm leading-7 text-brand-muted">
+              {locale === "es"
+                ? "Perfiles: demostración actual; runtime local con Docker sujeto a pruebas de release; producción administrada, Google Cloud y despliegue privado diseñados, pendientes de validación por cliente."
+                : "Profiles: current demonstration; local Docker runtime subject to release testing; managed production, Google Cloud, and private deployment designed, awaiting customer-specific validation."}
+            </p>
           </div>
         </Reveal>
 
