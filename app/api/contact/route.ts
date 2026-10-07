@@ -68,7 +68,7 @@ export async function POST(req: Request) {
   const autoReply = getAutoReplyCopy(locale);
 
   try {
-    await Promise.all([
+    const deliveries = await Promise.all([
       resend.emails.send({
         from: fromEmail,
         to: CONTACT_INBOX,
@@ -100,6 +100,12 @@ export async function POST(req: Request) {
         `,
       }),
     ]);
+
+    // The provider SDK resolves rejected requests as { data: null, error },
+    // rather than throwing. A contact acknowledgement requires both accepts.
+    if (deliveries.some((delivery) => delivery.error || !delivery.data?.id)) {
+      return NextResponse.json({ error: "Unable to send email." }, { status: 500 });
+    }
 
     return NextResponse.json({ ok: true });
   } catch {
